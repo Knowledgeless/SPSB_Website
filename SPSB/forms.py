@@ -63,3 +63,4 @@ class NewsPostForm(forms.ModelForm):
                     )
 
         return post
+    
