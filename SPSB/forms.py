@@ -63,4 +63,26 @@ class NewsPostForm(forms.ModelForm):
                     )
 
         return post
-    
+
+
+
+class NewsPostMediaForm(forms.ModelForm):
+    class Meta:
+        model = NewsPostMedia
+        fields = ['media', 'caption_override', 'section_text', 'order', 'is_banner']
+
+        widgets = {
+            'media': forms.Select(attrs={'class': 'form-control'}),
+            'caption_override': forms.TextInput(attrs={'class': 'form-control'}),
+            'section_text': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'order': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+
+NewsPostMediaFormSet = inlineformset_factory(
+    NewsPost,
+    NewsPostMedia,
+    form=NewsPostMediaForm,
+    extra=1,
+    can_delete=True
+)

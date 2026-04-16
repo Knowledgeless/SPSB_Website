@@ -14,7 +14,7 @@
 
             {% for post in news_posts %}
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm news-card" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">
+                    <div class="card h-100 shadow-sm news-card-modern" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">
                         <!-- Image -->
                         {% with post.post_media.first as pm %}
                             {% if pm %}
@@ -58,7 +58,6 @@
                     </div>
                 </div>
             {% endfor %}
-
         </div>
     </div>
 
@@ -73,10 +72,9 @@
                     <h5 class="modal-title"><b>{{ post.title }}</b></h5>
                     <button type="button" class="btn btn-warning btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                    
+            
 
                 <div class="modal-body">
-
                     <!-- Image -->
                     {% with post.post_media.first as pm %}
                         {% if pm %}
@@ -102,9 +100,6 @@
             </div>
         </div>
     {% endfor %}
-
-
-
 {% endblock content %}
 
-<script src=" {% static "js/news.js" %} "></script>
+<script src=" {% static 'js/news.js' %} "></script>

@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}Create News{% endblock page_title %}
+
+{% block css_links %}
+<link rel="stylesheet" href="{% static 'css/news.css' %}">
+{% endblock css_links %}
+
+{% block content %}
+
+<div class="container editor-container mt-4">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+
+            <!-- LEFT: EDITOR -->
+            <div class="col-lg-8">
+
+                <!-- TITLE -->
+                <div class="editor-header mb-3">
+                    {{ form.title }}
+                </div>
+
+                <!-- MAIN CONTENT -->
+                <div class="editor-card mb-4">
+                    <label class="mb-2 text-muted">Main Content</label>
+                    {{ form.content }}
+                </div>
+
+                <!-- SECTIONS -->
+                <div class="editor-card">
+                    <h5 class="mb-3">Content Sections</h5>
+
+                    {{ formset.management_form }}
+
+                    <div id="formset-container">
+                        {% for form in formset %}
+                        <div class="section-block mb-3 formset-item">
+
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label>Image</label>
+                                    {{ form.media }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Caption</label>
+                                    {{ form.caption_override }}
+                                </div>
+                            </div>
+
+                            <div class="mt-2">
+                                <label>Text</label>
+                                {{ form.section_text }}
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-2">
+                                <div>
+                                    <small>Banner</small>
+                                    {{ form.is_banner }}
+                                </div>
+
+                                <div>
+                                    <small>Order</small>
+                                    {{ form.order }}
+                                </div>
+
+                                <div class="text-danger">
+                                    {{ form.DELETE }} Delete
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="button" class="add-btn mt-2" id="add-form">
+                        + Add New Section
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: SETTINGS -->
+            <div class="col-lg-4">
+
+                <div class="publish-bar">
+
+                    <div class="editor-card mb-3">
+                        <h6>Publish</h6>
+
+                        <div class="form-check">
+                            {{ form.publish_now }}
+                            <label>Publish now</label>
+                        </div>
+
+                        <div class="mt-2">
+                            {{ form.status }}
+                        </div>
+                    </div>
+
+                    <div class="editor-card mb-3">
+                        <h6>Category</h6>
+                        {{ form.category }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Save Post
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+{% endblock content %}
+
+<script src='{% static "js/news_form.js" %}'></script>

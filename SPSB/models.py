@@ -54,11 +54,16 @@ class NewsPostMedia(models.Model):
     post = models.ForeignKey(
         'NewsPost', 
         on_delete=models.CASCADE,
-        related_name='post_media')
+        related_name='post_media'
+    )
     media = models.ForeignKey('Media', on_delete=models.CASCADE)
 
     order = models.PositiveIntegerField(default=0)
+
     caption_override = models.TextField(blank=True, default="")
+    section_text = models.TextField(blank=True, default="")  # 🔥 ADD THIS
+
+    is_banner = models.BooleanField(default=False)  # 🔥 HERO IMAGE CONTROL
 
     class Meta:
         ordering = ['order']

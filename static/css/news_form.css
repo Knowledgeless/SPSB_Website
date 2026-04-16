@@ -1,0 +1,55 @@
+/* ===== MODERN UI ===== */
+.editor-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.editor-header input {
+    font-size: 2rem;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+.editor-header input::placeholder {
+    color: #aaa;
+}
+
+.editor-card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    padding: 20px;
+    background: #fff;
+}
+
+.section-block {
+    border-radius: 12px;
+    background: #f9fafb;
+    padding: 15px;
+    transition: 0.2s;
+}
+
+.section-block:hover {
+    background: #f1f5f9;
+}
+
+.add-btn {
+    border: 2px dashed #ccc;
+    background: transparent;
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.add-btn:hover {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.publish-bar {
+    position: sticky;
+    top: 10px;
+}

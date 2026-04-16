@@ -2,10 +2,9 @@
 .custom-toast {
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 5px !important;
     color: #fff;
     min-width: 280px;
-
     /* Smooth entry animation */
     transform: translateX(120%);
     opacity: 0;
@@ -65,3 +64,12 @@
 .toast-info .toast-progress {
     background: rgba(255,255,255,0.6);
 }
+
+.toast-body .btn-close {
+    color: white !important;
+}
+
+
+
+
+

@@ -2,7 +2,7 @@
         const toastElList = document.querySelectorAll('.toast');
 
         toastElList.forEach(function (toastEl) {
-            const delay = 3000; // 3 seconds
+            const delay = 4000; // 3 seconds
 
             // Set progress animation duration dynamically
             const progressBar = toastEl.querySelector('.toast-progress');

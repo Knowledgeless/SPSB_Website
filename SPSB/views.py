@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import NewsPost, Category, Media, NewsPostMedia
 from .forms import NewsPostForm
 from django.contrib.auth.decorators import login_required
@@ -6,6 +6,9 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+
+from django.utils import timezone
+from .forms import NewsPostForm, NewsPostMediaFormSet
 
 # Create your views here.
 def home(request):
@@ -39,6 +42,40 @@ def edit_post(request, id):
         'form': form,
         'post': post
     })
+
+
+
+@login_required
+def create_or_edit_post(request, pk=None):
+    post = get_object_or_404(NewsPost, pk=pk) if pk else None
+
+    if request.method == 'POST':
+        form = NewsPostForm(request.POST, instance=post)
+        formset = NewsPostMediaFormSet(request.POST, instance=post)
+
+        if form.is_valid() and formset.is_valid():
+            post = form.save(commit=False)
+            post.created_by = request.user
+
+            if form.cleaned_data.get('publish_now'):
+                post.status = 'published'
+                post.published_at = timezone.now()
+
+            post.save()
+            formset.save()
+
+            return redirect('news')
+
+    else:
+        form = NewsPostForm(instance=post)
+        formset = NewsPostMediaFormSet(instance=post)
+
+    return render(request, 'news_form.html', {
+        'form': form,
+        'formset': formset
+    })
+
+
 
 
 @login_required
@@ -77,3 +114,4 @@ def logout_view(request):
     logout(request)
     messages.error(request, "You have been logged out.")
     return redirect('home')
+
