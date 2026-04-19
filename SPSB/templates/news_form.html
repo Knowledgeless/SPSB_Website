@@ -4,79 +4,98 @@
 {% block page_title %}Create News{% endblock page_title %}
 
 {% block css_links %}
-<link rel="stylesheet" href="{% static 'css/news.css' %}">
+<link rel="stylesheet" href="{% static 'css/news_form.css' %}">
 {% endblock css_links %}
 
 {% block content %}
 
 <div class="container editor-container mt-4">
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="row">
+
+            <!-- LEFT: EDITOR -->
             <!-- LEFT: EDITOR -->
             <div class="col-lg-8">
-                <!-- TITLE -->
+
+                <!-- 🔥 BANNER IMAGE -->
+                <div class="editor-card mb-4">
+                    <h5>Banner Image</h5>
+
+                    {% if formset.forms.0.instance.media %}
+                        <img src="{{ formset.forms.0.instance.media.file.url }}" class="preview-img mb-2">
+                    {% else %}
+                        <p class="text-muted mb-0">No banner image available yet.</p>
+                    {% endif %}
+                    <p class="small text-muted">Section images below are used for the news content.</p>
+                </div>
+
+                <!-- 🔥 TITLE -->
                 <div class="editor-header mb-3">
                     {{ form.title }}
                 </div>
 
-                <!-- MAIN CONTENT -->
+
+                <!-- 🔥 MAIN CONTENT -->
                 <div class="editor-card mb-4">
                     <label class="mb-2 text-muted">Main Content</label>
                     {{ form.content }}
                 </div>
 
-                <!-- SECTIONS -->
+
+                <!-- 🔥 SECTIONS -->
                 <div class="editor-card">
                     <h5 class="mb-3">Content Sections</h5>
 
                     {{ formset.management_form }}
 
                     <div id="formset-container">
+
                         {% for form in formset %}
-                            <div class="section-block mb-3 formset-item">
-                                {{ form.id }}
-                                <div class="row g-2">
-                                    <div class="col-md-6">
-                                        <label>Image</label>
-                                        {{ form.media }}
-                                    </div>
+                        <div class="section-block mb-4 formset-item">
 
-                                    <div class="col-md-6">
-                                        <label>Caption</label>
-                                        {{ form.caption_override }}
-                                    </div>
-                                </div>
+                            {{ form.id }}
+                            {{ form.media.as_hidden }}
+                            {{ form.order }}
 
-                                <div class="d-flex justify-content-between mt-2">
-                                    <div>
-                                        <small>Banner</small>
-                                        {{ form.is_banner }}
-                                    </div>
+                            <!-- IMAGE -->
+                            <div class="mb-2">
+                                <label>Section Image</label>
+                                {{ form.section_image }}
 
-                                    <div>
-                                        <small>Order</small>
-                                        {{ form.order }}
-                                    </div>
-
-                                    <div class="text-danger">
-                                        {{ form.DELETE }} Delete
-                                    </div>
-                                </div>
-
-                                <div class="mt-2">
-                                    <label>Text</label>
-                                    {{ form.section_text }}
-                                </div>
-
+                                {% if form.instance.media %}
+                                    <img src="{{ form.instance.media.file.url }}" class="preview-img mt-2">
+                                {% endif %}
                             </div>
+
+                            <!-- CAPTION -->
+                            <div class="mb-2">
+                                <label>Caption</label>
+                                {{ form.caption_override }}
+                            </div>
+
+                            <!-- TEXT -->
+                            <div class="mb-2">
+                                <label>Content</label>
+                                {{ form.section_text }}
+                            </div>
+
+                            <!-- DELETE -->
+                            <div class="text-danger">
+                                {{ form.DELETE }} Delete Section
+                            </div>
+
+                        </div>
                         {% endfor %}
+
                     </div>
 
-                    <button type="button" class="add-btn mt-2" id="add-form">
-                        + Add New Section
+                    <!-- ADD NEW -->
+                    <button type="button" class="btn btn-outline-primary mt-2" id="add-form">
+                        + Add Another Section
                     </button>
+
                 </div>
 
             </div>
@@ -86,33 +105,54 @@
 
                 <div class="publish-bar">
 
-                    <div class="editor-card mb-3">
-                        <h6>Publish</h6>
-
-                        <div class="form-check">
-                            {{ form.publish_now }}
-                            <label>Publish now</label>
-                        </div>
-
-                        <div class="mt-2">
-                            {{ form.status }}
+                    <!-- STATUS CARD -->
+                    <div class="editor-card status-card mb-3 p-3">
+                        <h6 class="mb-3">Status</h6>
+                        <div class="status-buttons d-flex gap-2 flex-wrap">
+                            {% for value, label in form.status.field.choices %}
+                            <label class="btn btn-outline-secondary status-btn {% if form.status.value == value %}active{% endif %}">
+                                <input type="radio" name="status" value="{{ label }}" {% if form.status.value == value %}checked{% endif %} class="d-none">
+                                {{ label }}
+                            </label>
+                            {% endfor %}
                         </div>
                     </div>
 
-                    <div class="editor-card mb-3">
-                        <h6>Category</h6>
-                        {{ form.category }}
+                    <!-- CATEGORY CARD -->
+                    <div class="editor-card category-card mb-3 p-3">
+                        <h6 class="mb-3">Category</h6>
+                        
+                        <!-- Existing Categories -->
+                        <div class="category-pills d-flex gap-2 flex-wrap mb-3">
+                            {% for cat in form.category.field.queryset %}
+                            <label class="btn btn-sm btn-outline-primary category-pill {% if form.category.value == cat.id %}active{% endif %}">
+                                <input type="radio" name="category" value="{{ cat.id }}" {% if form.category.value == cat.id %}checked{% endif %} class="d-none">
+                                {{ cat.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+
+                        <!-- New Category Input -->
+                        <div class="new-category-input">
+                            <label class="small text-muted d-block mb-2">Or create a new category:</label>
+                            {{ form.new_category }}
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">
-                        Save Post
+                    <!-- SAVE -->
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">
+                        Save News
                     </button>
+
                 </div>
+
             </div>
+
         </div>
     </form>
 </div>
 
 {% endblock content %}
 
-<script src='{% static "js/news_form.js" %}'></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="{% static 'js/news_form.js' %}"></script>

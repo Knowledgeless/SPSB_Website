@@ -55,14 +55,20 @@
 
                             <!-- Admin Buttons -->
                             {% if request.user.is_staff %}
-                            <div onclick="event.stopPropagation();">
-                                <a href="{% url 'edit_post' post.id %}" class="text-primary me-2">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="{% url 'delete_post' post.id %}" class="text-danger">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </div>
+                                <span class="position-absolute end-0 mx-2" onclick="event.stopPropagation();">
+                                    <a href="{% url 'edit_post' post.id %}" class="text-primary me-2">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+
+                                    <form method="POST" action="{% url 'delete_post' post.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                            onclick="return confirm('Are you sure?')"
+                                            class="btn btn-link text-danger p-0 m-0">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </span>
                             {% endif %}
                             <!-- Title -->
                             <h5 class="card-title">{{ post.title }}</h5>
@@ -110,6 +116,22 @@
 
                     <!-- Full Content -->
                     <p class="m-text-truncate">{{ post.content }}</p>
+
+                    {% if post.post_media.exists %}
+                        {% for section in post.post_media.all %}
+                            <div class="mb-4">
+                                {% if section.media %}
+                                    <img src="{{ section.media.file.url }}" class="img-fluid mb-2" style="width:100%; object-fit:cover; max-height:360px;">
+                                {% endif %}
+                                {% if section.caption_override %}
+                                    <p class="fw-semibold mb-1">{{ section.caption_override }}</p>
+                                {% endif %}
+                                {% if section.section_text %}
+                                    <p>{{ section.section_text }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
 
                 </div>
 

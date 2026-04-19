@@ -1,4 +1,7 @@
 from cherrypy import request
+from django.http import JsonResponse
+from django.db import transaction
+
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import NewsPost, Category, Media, NewsPostMedia
 from .forms import NewsPostForm
@@ -22,12 +25,44 @@ def news(request):
         news_posts = NewsPost.objects.all()
     else:
         # Visitors see only published
-        news_posts = NewsPost.objects.filter(status='published')
+        news_posts = NewsPost.objects.select_related('category').prefetch_related('post_media__media')
 
     return render(request, 'news.html', {
         'news_posts': news_posts
     })
 
+
+@login_required
+def upload_media(request):
+    if request.method == 'POST' and request.FILES.get('file'):
+        file = request.FILES['file']
+
+        media = Media.objects.create(
+            file=file,
+            uploaded_by=request.user
+        )
+
+        return JsonResponse({
+            'success': True,
+            'id': media.id,
+            'url': media.file.url
+        })
+
+    return JsonResponse({'success': False}, status=400)
+
+
+@login_required
+def media_list(request):
+    media_items = Media.objects.filter(is_active=True)
+    data = [
+        {
+            'id': media.id,
+            'url': media.file.url,
+            'caption': media.caption or ''
+        }
+        for media in media_items
+    ]
+    return JsonResponse(data, safe=False)
 
 
 @login_required
@@ -39,17 +74,43 @@ def create_or_edit_post(request, pk=None):
         formset = NewsPostMediaFormSet(request.POST, request.FILES, instance=post)
 
         if form.is_valid() and formset.is_valid():
-            # 🔥 STEP 1: Save post FIRST
-            post = form.save(commit=False)
-            post.created_by = request.user
 
-            if form.cleaned_data.get('publish_now'):
-                post.status = 'published'
-                post.published_at = timezone.now()
+            with transaction.atomic():
 
-            post.save()  # ✅ now it has PK
-            formset.instance = post     # 🔥 STEP 2: re-attach instance to formset
-            formset.save()  # 🔥 STEP 3: save formset
+                post = form.save(commit=False, user=request.user)
+                
+                if form.cleaned_data.get('publish_now'):
+                    post.status = 'published'
+                    post.published_at = timezone.now()
+
+                post.save()
+
+                formset.instance = post
+
+                for deleted_form in formset.deleted_forms:
+                    if deleted_form.instance.pk:
+                        deleted_form.instance.delete()
+
+                for form_item in formset.forms:
+                    if form_item.cleaned_data.get('DELETE'):
+                        continue
+
+                    if not form_item.has_changed() and not form_item.instance.pk:
+                        continue
+
+                    instance = form_item.save(commit=False)
+                    section_image = form_item.cleaned_data.get('section_image')
+                    selected_media = form_item.cleaned_data.get('media')
+
+                    if section_image:
+                        media_obj = Media.objects.create(file=section_image, uploaded_by=request.user)
+                        instance.media = media_obj
+                    elif selected_media:
+                        instance.media = selected_media
+
+                    instance.post = post
+                    instance.save()
+
             if post.status == 'published':
                 messages.success(request, f"Post {post.status.capitalize()} Successfully!")
             elif post.status == 'draft':
@@ -89,11 +150,11 @@ def delete_post(request, id):
 
     if request.method == 'POST':
         post.delete()
-        return redirect('news')
+        messages.error(request, "Post Deleted and Never be Recovered!")
+    
+    return redirect('news')
 
-    return render(request, 'delete_post.html', {
-        'post': post
-    })
+    
 
 def login_view(request):
     if request.method == 'POST':
@@ -119,4 +180,6 @@ def logout_view(request):
     logout(request)
     messages.error(request, "You have been logged out.")
     return redirect('home')
+
+
 

@@ -37,6 +37,9 @@ class Media(models.Model):
         blank=True
     )
 
+    alt_text = models.CharField(max_length=255, blank=True)
+    is_active = models.BooleanField(default=True)
+
     def save(self, *args, **kwargs):
         if self.file and not self.file_hash:
             self.file.seek(0)
@@ -56,7 +59,7 @@ class NewsPostMedia(models.Model):
         on_delete=models.CASCADE,
         related_name='post_media'
     )
-    media = models.ForeignKey('Media', on_delete=models.CASCADE)
+    media = models.ForeignKey('Media', on_delete=models.CASCADE, null=True, blank=True)
 
     order = models.PositiveIntegerField(default=0)
 
