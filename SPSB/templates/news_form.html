@@ -14,10 +14,8 @@
         {% csrf_token %}
 
         <div class="row">
-
             <!-- LEFT: EDITOR -->
             <div class="col-lg-8">
-
                 <!-- TITLE -->
                 <div class="editor-header mb-3">
                     {{ form.title }}
@@ -37,42 +35,42 @@
 
                     <div id="formset-container">
                         {% for form in formset %}
-                        <div class="section-block mb-3 formset-item">
+                            <div class="section-block mb-3 formset-item">
+                                {{ form.id }}
+                                <div class="row g-2">
+                                    <div class="col-md-6">
+                                        <label>Image</label>
+                                        {{ form.media }}
+                                    </div>
 
-                            <div class="row g-2">
-                                <div class="col-md-6">
-                                    <label>Image</label>
-                                    {{ form.media }}
+                                    <div class="col-md-6">
+                                        <label>Caption</label>
+                                        {{ form.caption_override }}
+                                    </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label>Caption</label>
-                                    {{ form.caption_override }}
+                                <div class="mt-2">
+                                    <label>Text</label>
+                                    {{ form.section_text }}
                                 </div>
+
+                                <div class="d-flex justify-content-between mt-2">
+                                    <div>
+                                        <small>Banner</small>
+                                        {{ form.is_banner }}
+                                    </div>
+
+                                    <div>
+                                        <small>Order</small>
+                                        {{ form.order }}
+                                    </div>
+
+                                    <div class="text-danger">
+                                        {{ form.DELETE }} Delete
+                                    </div>
+                                </div>
+
                             </div>
-
-                            <div class="mt-2">
-                                <label>Text</label>
-                                {{ form.section_text }}
-                            </div>
-
-                            <div class="d-flex justify-content-between mt-2">
-                                <div>
-                                    <small>Banner</small>
-                                    {{ form.is_banner }}
-                                </div>
-
-                                <div>
-                                    <small>Order</small>
-                                    {{ form.order }}
-                                </div>
-
-                                <div class="text-danger">
-                                    {{ form.DELETE }} Delete
-                                </div>
-                            </div>
-
-                        </div>
                         {% endfor %}
                     </div>
 
@@ -109,11 +107,8 @@
                     <button type="submit" class="btn btn-primary w-100">
                         Save Post
                     </button>
-
                 </div>
-
             </div>
-
         </div>
     </form>
 </div>

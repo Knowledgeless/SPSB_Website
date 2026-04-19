@@ -1,3 +1,4 @@
+from cherrypy import request
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import NewsPost, Category, Media, NewsPostMedia
 from .forms import NewsPostForm
@@ -16,8 +17,6 @@ def home(request):
 
 
 def news(request):
-    # news_posts = NewsPost.objects.prefetch_related('mediapost_set__media').all().order_by('-created_at')
-    # news_posts = NewsPost.objects.prefetch_related('post_media__media').all()
     news_posts = NewsPost.objects.prefetch_related('post_media__media').all().order_by('-created_at')
 
     return render(request, 'news.html', {
@@ -50,10 +49,12 @@ def create_or_edit_post(request, pk=None):
     post = get_object_or_404(NewsPost, pk=pk) if pk else None
 
     if request.method == 'POST':
-        form = NewsPostForm(request.POST, instance=post)
-        formset = NewsPostMediaFormSet(request.POST, instance=post)
+        form = NewsPostForm(request.POST, request.FILES, instance=post)
+        formset = NewsPostMediaFormSet(request.POST, request.FILES, instance=post)
 
         if form.is_valid() and formset.is_valid():
+            print("FORM VALID ✅")
+
             post = form.save(commit=False)
             post.created_by = request.user
 
@@ -66,6 +67,10 @@ def create_or_edit_post(request, pk=None):
 
             return redirect('news')
 
+        else:
+            print("FORM ERRORS:", form.errors)
+            print("FORMSET ERRORS:", formset.errors)
+
     else:
         form = NewsPostForm(instance=post)
         formset = NewsPostMediaFormSet(instance=post)
@@ -74,7 +79,6 @@ def create_or_edit_post(request, pk=None):
         'form': form,
         'formset': formset
     })
-
 
 
 
@@ -109,7 +113,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
-
+@login_required
 def logout_view(request):
     logout(request)
     messages.error(request, "You have been logged out.")

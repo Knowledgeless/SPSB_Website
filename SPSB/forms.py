@@ -5,6 +5,8 @@ from .models import NewsPost, Media, NewsPostMedia
 
 class NewsPostForm(forms.ModelForm):
     
+
+    publish_now = forms.BooleanField(required=False)
     # Custom field to handle multiple media selection
     media_items = forms.ModelMultipleChoiceField(
         queryset=Media.objects.all(),
@@ -22,7 +24,6 @@ class NewsPostForm(forms.ModelForm):
             'category',
             'status',
         ]
-
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -42,7 +43,7 @@ class NewsPostForm(forms.ModelForm):
         }
 
     def save(self, commit=True, user=None):
-        
+    
         post = super().save(commit=False)
 
         if user:
@@ -50,7 +51,6 @@ class NewsPostForm(forms.ModelForm):
 
         if commit:
             post.save()
-
             # Handle ManyToMany through model manually
             media_items = self.cleaned_data.get('media_items')
 

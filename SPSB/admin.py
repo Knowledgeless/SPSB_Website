@@ -34,7 +34,7 @@ class NewsPostMediaInline(admin.TabularInline):
 # ✅ NewsPost Admin (Main CMS Panel)
 @admin.register(NewsPost)
 class NewsPostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'status', 'category', 'created_by', 'created_at']
+    list_display = ['id','title', 'status', 'category', 'created_by', 'created_at']
     list_filter = ['status', 'category', 'created_at']
     search_fields = ['title', 'content']
     prepopulated_fields = {"slug": ("title",)}  # auto slug (optional)
