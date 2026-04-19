@@ -72,6 +72,18 @@ def create_or_edit_post(request, pk=None):
 
 
 @login_required
+def dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    user_posts = NewsPost.objects.filter(created_by=request.user)
+
+    return render(request, 'dashboard.html', {
+        'user_posts': user_posts
+    })
+
+
+@login_required
 def delete_post(request, id):
     post = NewsPost.objects.get(id=id)
 
