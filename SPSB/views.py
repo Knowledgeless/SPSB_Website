@@ -17,29 +17,15 @@ def home(request):
 
 
 def news(request):
-    news_posts = NewsPost.objects.prefetch_related('post_media__media').all().order_by('-created_at')
+    if request.user.is_staff:
+        # Admin sees everything
+        news_posts = NewsPost.objects.all()
+    else:
+        # Visitors see only published
+        news_posts = NewsPost.objects.filter(status='published')
 
     return render(request, 'news.html', {
         'news_posts': news_posts
-    })
-
-
-@login_required
-def edit_post(request, id):
-    post = NewsPost.objects.get(id=id)
-
-    if request.method == 'POST':
-        form = NewsPostForm(request.POST, instance=post)
-
-        if form.is_valid():
-            form.save(user=request.user)
-            return redirect('news')
-    else:
-        form = NewsPostForm(instance=post)
-
-    return render(request, 'edit_post.html', {
-        'form': form,
-        'post': post
     })
 
 
@@ -53,8 +39,7 @@ def create_or_edit_post(request, pk=None):
         formset = NewsPostMediaFormSet(request.POST, request.FILES, instance=post)
 
         if form.is_valid() and formset.is_valid():
-            print("FORM VALID ✅")
-
+            # 🔥 STEP 1: Save post FIRST
             post = form.save(commit=False)
             post.created_by = request.user
 
@@ -62,14 +47,19 @@ def create_or_edit_post(request, pk=None):
                 post.status = 'published'
                 post.published_at = timezone.now()
 
-            post.save()
-            formset.save()
-
+            post.save()  # ✅ now it has PK
+            formset.instance = post     # 🔥 STEP 2: re-attach instance to formset
+            formset.save()  # 🔥 STEP 3: save formset
+            if post.status == 'published':
+                messages.success(request, f"Post {post.status.capitalize()} Successfully!")
+            elif post.status == 'draft':
+                messages.warning(request, f"Post {post.status.capitalize()} Successfully!")
+            else:
+                messages.info(request, f"Post {post.status.capitalize()} Successfully!")
             return redirect('news')
 
         else:
-            print("FORM ERRORS:", form.errors)
-            print("FORMSET ERRORS:", formset.errors)
+            messages.error(request, f"{form.errors} {formset.errors}")
 
     else:
         form = NewsPostForm(instance=post)
@@ -79,7 +69,6 @@ def create_or_edit_post(request, pk=None):
         'form': form,
         'formset': formset
     })
-
 
 
 @login_required
@@ -104,7 +93,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Welcome back, {username}!")
-                return redirect('home')
+                return redirect('news')
             else:
                 messages.error(request, "Invalid username or password.")
         else:

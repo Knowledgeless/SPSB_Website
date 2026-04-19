@@ -32,9 +32,26 @@
                                 </small>
                             </p>
                             <!-- Category -->
-                            <span class="badge bg-primary mb-2">
-                                {{ post.category.name }}
-                            </span>
+                            {% if post.category %}
+                                <span class="badge bg-primary mb-2">
+                                    {{ post.category.name | title }}
+                                </span>
+                            {% endif %}
+                            {% if request.user.is_staff %}
+                                {% if post.status == "draft"%}
+                                    <span class="badge bg-warning mb-2">
+                                        {{ post.status | title }}
+                                    </span>
+                                    {% elif post.status == "published" %}
+                                        <span class="badge bg-success mb-2">
+                                            {{ post.status | title }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-danger mb-2">
+                                            {{ post.status | title }}
+                                        </span>
+                                {% endif %}
+                            {% endif %}
 
                             <!-- Admin Buttons -->
                             {% if request.user.is_staff %}

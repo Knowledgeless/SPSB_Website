@@ -23,6 +23,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('home/', views.home, name='home'),
     path('news/', views.news, name='news'),
+    path('news/create/', views.create_or_edit_post, name='create_news'),
     path('news/edit/<int:pk>/', views.create_or_edit_post, name='edit_post'),
     path('news/delete/<int:id>/', views.delete_post, name='delete_post'),
     path('login/', views.login_view, name='login'),
