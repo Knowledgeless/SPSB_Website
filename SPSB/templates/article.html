@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}Article{% endblock page_title %}
+
+{% block css_links %}
+    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+{% endblock css_links %}
+
+{% block content %}
+    <div class="mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    {% with post.post_media.first as pm %}
+                        {% if pm %}
+                            <img src="{{ pm.media.file.url }}" class="card-img-top" style="height:400px; object-fit:cover;">
+                        {% else %}
+                            <img src="/static/default.jpg" class="card-img-top">
+                        {% endif %}
+                    {% endwith %}
+                    <div class="card-body">
+                        <h1 class="card-title">{{ post.title }}</h1>
+                        <p class="card-text">{{ post.content }}</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Published on {{ post.created_at|date:"M d, Y" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -10,12 +10,41 @@
     line-height: 1.5;
 }
 
+.filter-container {
+    background: #f8f9fa;
+    padding: 15px 0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.filter{
+    font-size: 20px;
+    color: #343434;
+}
+
+.filter .active{
+    padding: 3px 20px;
+    border-radius: 20px !important;
+    background-color: #0d6efd;
+    color: white;
+}
+
+.filter .btn:focus {
+    box-shadow: none !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.card-container {
+    padding: 0 4px;
+}
+
 .m-text-truncate{
     text-align: justify;
 }
 
 .news-card-modern {
-    border-radius: 16px;
+    border-radius: 10px;
     overflow: hidden;
     background: #fff;
     cursor: pointer;
@@ -119,4 +148,13 @@ small{
 .page-link:focus {
     box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
     border-color: #0d6efd;
+}
+
+.article-link .btn {
+    display: block;
+    margin-top: 10px;
+    font-weight: 500;
+    border-radius: 0 !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
 }

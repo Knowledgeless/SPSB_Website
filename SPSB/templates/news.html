@@ -9,11 +9,22 @@
 
 
 {% block content %}
-    <div class="container mt-4">
-        <div class="row">
 
+    <div class="container mt-4">
+        <!-- Category Filter -->
+        <div class="mb-4 d-flex justify-content-center filter-container w-100">
+            <span class="d-flex flex-wrap gap-2 filter align-items-center">
+                <span><i class="fa-solid fa-sliders"></i></span>
+                <a href="{% url 'news' %}" class="btn {% if not selected_category %}active{% endif %}">All</a>
+                {% for cat in categories %}
+                    <a href="?category={{ cat.name }}" class="btn {% if selected_category == cat.name %}active{% endif %}">{{ cat.name|title }}</a>
+                {% endfor %}
+            </span>
+        </div>
+
+        <div class="row">
             {% for post in news_posts %}
-                <div class="col-md-4 mb-4">
+                <div class="col-12 col-md-6 col-lg-4 mb-4 card-container">
                     <div class="card h-100 shadow-sm news-card-modern" data-bs-toggle="modal" data-bs-target="#modal{{ post.id }}">
                         <!-- Image -->
                         {% with post.post_media.first as pm %}
@@ -78,6 +89,12 @@
                                 {{ post.content }} 
                             </p>
                         </div>
+                        
+                        <div class="article-link">
+                            <a href="{% url "article" post.id %}" class="btn btn-warning  w-100">
+                                Read More <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
@@ -89,7 +106,7 @@
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -106,14 +123,14 @@
                         </li>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            <a class="page-link" href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
                         </li>
                     {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -129,60 +146,8 @@
     </div>
 
 
- <!-- Modals for each post -->
-    {% for post in news_posts %}
-        <div class="modal fade" id="modal{{ post.id }}" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+    
 
-                <div class="modal-header">
-                    <h5 class="modal-title"><b>{{ post.title }}</b></h5>
-                    <button type="button" class="btn btn-warning btn-close" data-bs-dismiss="modal"></button>
-                </div>
-            
-
-                <div class="modal-body">
-                    <!-- Image -->
-                    {% with post.post_media.first as pm %}
-                        {% if pm %}
-                            <img src="{{ pm.media.file.url }}" class="card-img-top" style="height:100vh; object-fit:cover;">
-                        {% else %}
-                            <img src="/static/default.jpg" class="card-img-top">
-                        {% endif %}
-                    {% endwith %}
-
-                    <!-- Category + Date -->
-                    <p class="text-muted">
-                        <small>
-                            {{ post.created_at|date:"M d, Y" }}
-                        </small>
-                    </p> 
-
-                    <!-- Full Content -->
-                    <p class="m-text-truncate">{{ post.content }}</p>
-
-                    {% if post.post_media.exists %}
-                        {% for section in post.post_media.all %}
-                            <div class="mb-4">
-                                {% if section.media %}
-                                    <img src="{{ section.media.file.url }}" class="img-fluid mb-2" style="width:100%; object-fit:cover; max-height:360px;">
-                                {% endif %}
-                                {% if section.caption_override %}
-                                    <p class="fw-semibold mb-1">{{ section.caption_override }}</p>
-                                {% endif %}
-                                {% if section.section_text %}
-                                    <p>{{ section.section_text }}</p>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-
-                </div>
-
-                </div>
-            </div>
-        </div>
-    {% endfor %}
 {% endblock content %}
 
 <script src=" {% static 'js/news.js' %} "></script>

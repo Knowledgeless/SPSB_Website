@@ -22,21 +22,29 @@ def home(request):
 from django.core.paginator import Paginator
 
 def news(request):
+    category_filter = request.GET.get('category')
+    categories = Category.objects.all()
+
     if request.user.is_staff:
         # Admin sees everything
-        news_posts = NewsPost.objects.all()
+        news_posts = NewsPost.objects.select_related('category').prefetch_related('post_media__media')
     else:
         # Visitors see only published
-        news_posts = NewsPost.objects.select_related('category').prefetch_related('post_media__media')
+        news_posts = NewsPost.objects.filter(status='published').select_related('category').prefetch_related('post_media__media')
+
+    if category_filter:
+        news_posts = news_posts.filter(category__name=category_filter)
 
     # Pagination
-    paginator = Paginator(news_posts, 9)  # Show 12 news per page
+    paginator = Paginator(news_posts, 9)  # Show 9 news per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'news.html', {
         'page_obj': page_obj,
         'news_posts': page_obj.object_list,  # Keep backward compatibility
+        'categories': categories,
+        'selected_category': category_filter,
     })
 
 
@@ -139,6 +147,16 @@ def create_or_edit_post(request, pk=None):
         'formset': formset
     })
 
+def article(request, id):
+    post = get_object_or_404(NewsPost, id=id)
+
+    if post.status != 'published' and not request.user.is_staff:
+        messages.error(request, "This article is not available.")
+        return redirect('news')
+
+    return render(request, 'article.html', {
+        'post': post
+    })
 
 @login_required
 def dashboard(request):

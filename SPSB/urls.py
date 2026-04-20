@@ -25,6 +25,7 @@ urlpatterns = [
     path('news/', views.news, name='news'),
     path('news/create/', views.create_or_edit_post, name='create_news'),
     path('news/edit/<int:pk>/', views.create_or_edit_post, name='edit_post'),
+    path('news/article/<int:id>/', views.article, name='article'),
     path('news/delete/<int:id>/', views.delete_post, name='delete_post'),
     path('media/upload/', views.upload_media, name='upload_media'),
     path('media/list/', views.media_list, name='media_list'),
