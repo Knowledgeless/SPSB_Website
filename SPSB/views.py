@@ -36,7 +36,7 @@ def news(request):
         news_posts = news_posts.filter(category__name=category_filter)
 
     # Pagination
-    paginator = Paginator(news_posts, 9)  # Show 9 news per page
+    paginator = Paginator(news_posts, 9)  # Show 12 news per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

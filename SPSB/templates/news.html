@@ -36,10 +36,13 @@
                         {% endwith %}
 
                         <div class="card-body">
-                            <p>
+                            <!-- Title -->
+                            <h5 class="card-title">{{ post.title }}</h5>
+
+                            <p class="card-text mb-1">
                             <!-- Date -->
                                 <small class="text-muted">
-                                    {{ post.created_at|date:"M d, Y" }}
+                                    {{ post.created_at|date:"d M Y" }}
                                 </small>
                             </p>
                             <!-- Category -->
@@ -81,9 +84,7 @@
                                     </form>
                                 </span>
                             {% endif %}
-                            <!-- Title -->
-                            <h5 class="card-title">{{ post.title }}</h5>
-
+                            
                             <!-- Content preview (4 lines) -->
                             <p class="card-text text-muted text-truncate-4">
                                 {{ post.content }} 
