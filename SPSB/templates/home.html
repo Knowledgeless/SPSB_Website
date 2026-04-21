@@ -1,7 +1,56 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block page_title %}Home{% endblock page_title %}
 
+{% block css_links %}
+    <link rel="stylesheet" href="{% static 'css/myHome.css' %}">
+{% endblock css_links %}
+
+{% block body_class %}home-page{% endblock %}
+
 {% block content %}
-    <h1>Welcome to the Home Page</h1>
-    <p>This is the home page of our website.</p>
-{% endblock content %}
+    <!-- <h1>Welcome to the Home Page</h1>
+    <p>This is the home page of our website.</p> -->
+    <section class="hero m-2">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="10000">
+                        <img src="../../media/hero/hero01.jpg" class="d-block w-100 rounded" alt="...">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="../../media/hero/hero02.jpg" class="d-block w-100 rounded" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../../media/hero/hero03.jpg" class="d-block w-100 rounded" alt="...">
+                    </div>
+                </div>
+                <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button> -->
+            </div>
+        </div>
+        <div class="hero-text">
+            <h1>Welcome to the Home Page</h1>
+            <p>This is the home page of our website.</p>
+        </div>
+    </section>
+
+    <footer style="height: 900px;">
+        <div>
+            
+        </div>
+    </footer>
+{% endblock %}

@@ -1,0 +1,70 @@
+/* body {
+    padding-top: 70px;
+} */
+ html{
+    scroll-behavior: smooth;
+ }
+.my-nav {
+    background: white;
+    position: relative;
+    z-index: 10;
+
+    transition: all 0.8s ease;
+}
+
+.home-page .my-nav {
+    /* position: absolute; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    background: transparent;
+    color: white;
+    z-index: 1000;
+}
+@media (max-width: 768px) {
+    .home-page .my-nav {
+        background: white;
+        color: black;
+        position: relative;
+        z-index: 10;
+    }
+}
+
+/* navbar fixed to top after scroll */
+.my-nav.sticky-active {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    color: black;
+    z-index: 1000;
+}
+
+.nav-link{
+    display: inline-block;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+.nav-link:hover {
+    transform: scale(1.1); 
+    letter-spacing: 0.5px; 
+}
+
+
+
+.myGap {
+    gap: 5rem;
+}
+
+.offcanvas {
+    background: white;
+    width: 200px !important;
+}
+
+.offcanvas a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+}
