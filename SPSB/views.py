@@ -1,4 +1,3 @@
-from cherrypy import request
 from django.http import JsonResponse
 from django.db import transaction
 
@@ -154,8 +153,29 @@ def article(request, id):
         messages.error(request, "This article is not available.")
         return redirect('news')
 
+    # Get published posts filter
+    published_filter = NewsPost.objects.filter(status='published')
+    if not request.user.is_staff:
+        published_posts = published_filter
+    else:
+        published_posts = NewsPost.objects.all()
+
+    # Same category news (5 recent)
+    same_category_posts = published_posts.filter(
+        category=post.category
+    ).exclude(id=post.id).order_by('-created_at')[:5]
+
+    # Recent news (5 most recent)
+    recent_posts = published_posts.exclude(id=post.id).order_by('-created_at')[:5]
+
+    # Get banner image (the one marked as banner)
+    banner_image = post.post_media.filter(is_banner=True).first()
+
     return render(request, 'article.html', {
-        'post': post
+        'post': post,
+        'banner_image': banner_image,
+        'same_category_posts': same_category_posts,
+        'recent_posts': recent_posts,
     })
 
 @login_required

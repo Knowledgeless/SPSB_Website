@@ -20,7 +20,7 @@ class Media(models.Model):
     ]
 
     file = models.ImageField(upload_to='media/')
-    file_hash = models.CharField(max_length=64, unique=True, editable=False)
+    file_hash = models.CharField(max_length=64, editable=False)
     caption = models.TextField(blank=True, default="")
     media_type = models.CharField(
         max_length=20,

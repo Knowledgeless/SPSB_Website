@@ -95,6 +95,9 @@ class NewsPostMediaForm(forms.ModelForm):
                 'placeholder': 'Write section text...'
             }),
             'order': forms.HiddenInput(),
+            'is_banner': forms.CheckboxInput(attrs={
+                'class': 'form-check-input banner-checkbox'
+            }),
         }
 
 

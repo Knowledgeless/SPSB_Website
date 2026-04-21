@@ -316,3 +316,166 @@
 .save-btn:hover {
     background: rgb(9, 100, 97);
 }
+
+/* ===== BANNER CHECKBOX STYLING ===== */
+.banner-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+    vertical-align: top;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    border: 2px solid #dee2e6;
+    border-radius: 0.35em;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.banner-checkbox:hover {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.15);
+}
+
+.banner-checkbox:checked {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+.banner-checkbox:checked:hover {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+}
+
+.form-check-label {
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-check-label i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.banner-checkbox:checked ~ .form-check-label i {
+    transform: scale(1.15);
+}
+
+/* Form switch banner styling */
+.form-check.form-switch {
+    padding-left: 0;
+}
+
+.form-check.form-switch .form-check-input {
+    margin-left: 0;
+}
+
+/* ===== BANNER SECTION HIGHLIGHT ===== */
+.section-block {
+    position: relative;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-block.banner-section-active {
+    border-color: #ffc107;
+    background: linear-gradient(135deg, #f9fafb 0%, rgba(255, 193, 7, 0.05) 100%);
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1), 0 4px 12px rgba(255, 193, 7, 0.15);
+}
+
+.banner-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+    animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.banner-indicator i {
+    font-size: 1rem;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== BANNER LABEL STYLING ===== */
+.banner-label {
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.banner-label i {
+    color: #ffc107;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.banner-label span {
+    color: #212529;
+}
+
+.banner-checkbox:checked ~ .banner-label {
+    background: rgba(255, 193, 7, 0.1);
+    color: #212529;
+}
+
+.banner-checkbox:checked ~ .banner-label i {
+    transform: scale(1.2) rotate(10deg);
+    animation: crownPulse 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes crownPulse {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.3) rotate(15deg);
+    }
+    100% {
+        transform: scale(1.2) rotate(10deg);
+    }
+}
+
+.banner-label:hover {
+    background: rgba(255, 193, 7, 0.08);
+}
+
+.banner-checkbox:checked ~ .banner-label:hover {
+    background: rgba(255, 193, 7, 0.15);
+}
+
+
+

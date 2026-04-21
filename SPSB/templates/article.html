@@ -1,33 +1,157 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_title %}Article{% endblock page_title %}
+{% block page_title %}{{ post.title }}{% endblock page_title %}
 
 {% block css_links %}
     <link rel="stylesheet" href="{% static 'css/article.css' %}">
 {% endblock css_links %}
 
 {% block content %}
-    <div class="mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm">
-                    {% with post.post_media.first as pm %}
-                        {% if pm %}
-                            <img src="{{ pm.media.file.url }}" class="card-img-top" style="height:400px; object-fit:cover;">
-                        {% else %}
-                            <img src="/static/default.jpg" class="card-img-top">
-                        {% endif %}
-                    {% endwith %}
-                    <div class="card-body">
-                        <h1 class="card-title">{{ post.title }}</h1>
-                        <p class="card-text">{{ post.content }}</p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Published on {{ post.created_at|date:"M d, Y" }}
-                    </div>
+<div class="article-container">
+    <!-- Banner Section (16:9) -->
+    <div class="banner-section">
+        {% if banner_image %}
+            <img src="{{ banner_image.media.file.url }}" alt="{{ post.title }}" class="banner-image" loading="lazy">
+        {% else %}
+            <div class="banner-placeholder">
+                <i class="fas fa-image"></i>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Article Header -->
+    <div class="article-header">
+        <div class="container-fluid">
+            <div class="header-content">
+                <h1 class="article-title">{{ post.title }}</h1>
+                <div class="article-meta">
+                    <span class="meta-date">
+                        <i class="far fa-calendar"></i>
+                        {{ post.created_at|date:"M d, Y" }}
+                    </span>
+                    {% if post.category %}
+                        <span class="meta-category">
+                            <i class="fas fa-tag"></i>
+                            {{ post.category.name }}
+                        </span>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid article-main">
+        <div class="row">
+            <!-- Left Column - Article Content -->
+            <div class="col-lg-8">
+                <article class="article-content">
+                    <div class="article-body">
+                        {{ post.content|linebreaks }}
+                    </div>
+
+                    <!-- Additional Media Section -->
+                    {% with post.post_media.all|dictsort:"order" as media_list %}
+                        {% for pm in media_list %}
+                            {% if not pm.is_banner %}
+                                <div class="media-section">
+                                    {% if pm.media %}
+                                        <img src="{{ pm.media.file.url }}" alt="{{ pm.media.alt_text }}" class="media-image" loading="lazy">
+                                    {% endif %}
+                                    {% if pm.section_text %}
+                                        <div class="section-text">
+                                            {{ pm.section_text|linebreaks }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </article>
+            </div>
+
+            <!-- Right Column - Related News -->
+            <div class="col-lg-4">
+                <!-- Same Category News -->
+                {% if same_category_posts %}
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <h3 class="sidebar-title">
+                            <span class="title-text">Related News</span>
+                            <span class="title-icon"><i class="fas fa-folder-open"></i></span>
+                        </h3>
+                    </div>
+                    <div class="news-list">
+                        {% for news in same_category_posts %}
+                            <a href="{% url 'article' news.id %}" class="news-card-sidebar">
+                                <div class="news-card-left">
+                                    {% with news.post_media.first as pm %}
+                                        {% if pm and pm.is_banner %}
+                                            <img src="{{ pm.media.file.url }}" alt="{{ news.title }}" loading="lazy">
+                                        {% else %}
+                                            <div class="placeholder-image">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                <div class="news-card-right">
+                                    <h4 class="card-title">{{ news.title|truncatewords:6 }}</h4>
+                                    <div class="card-meta">
+                                        <span class="card-date">{{ news.created_at|date:"M d, Y" }}</span>
+                                    </div>
+                                    <p class="card-text">{{ news.content|truncatewords:15 }}</p>
+                                    <span class="read-more">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Recent News -->
+                {% if recent_posts %}
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <h3 class="sidebar-title">
+                            <span class="title-text">Recent News</span>
+                            <span class="title-icon"><i class="fas fa-fire"></i></span>
+                        </h3>
+                    </div>
+                    <div class="news-list">
+                        {% for news in recent_posts %}
+                            <a href="{% url 'article' news.id %}" class="news-card-sidebar">
+                                <div class="news-card-left">
+                                    {% with news.post_media.first as pm %}
+                                        {% if pm and pm.is_banner %}
+                                            <img src="{{ pm.media.file.url }}" alt="{{ news.title }}" loading="lazy">
+                                        {% else %}
+                                            <div class="placeholder-image">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                                <div class="news-card-right">
+                                    <h4 class="card-title">{{ news.title|truncatewords:6 }}</h4>
+                                    <div class="card-meta">
+                                        <span class="card-date">{{ news.created_at|date:"M d, Y" }}</span>
+                                    </div>
+                                    <p class="card-text">{{ news.content|truncatewords:15 }}</p>
+                                    <span class="read-more">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </span>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

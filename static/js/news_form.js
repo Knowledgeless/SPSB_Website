@@ -114,10 +114,70 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // =========================
+    // BANNER CHECKBOX SYSTEM (SINGLE SELECTION)
+    // =========================
+    function initBannerSystem() {
+        // Use event delegation to handle dynamically added forms
+        container?.addEventListener('change', function (e) {
+            if (e.target.classList.contains('banner-checkbox')) {
+                handleBannerCheckboxChange(e.target);
+            }
+        });
 
-    // =========================
-    // ADD FORMSET (SAFE CLONE)
-    // =========================
+        // Also handle initial state
+        document.querySelectorAll('.banner-checkbox').forEach(checkbox => {
+            if (checkbox.checked) {
+                highlightBannerSection(checkbox);
+            }
+        });
+    }
+
+    function handleBannerCheckboxChange(checkbox) {
+        // If this checkbox is now checked, uncheck all others
+        if (checkbox.checked) {
+            document.querySelectorAll('.banner-checkbox').forEach(cb => {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                    removeBannerHighlight(cb);
+                }
+            });
+            // Highlight this section
+            highlightBannerSection(checkbox);
+        } else {
+            removeBannerHighlight(checkbox);
+        }
+    }
+
+    function highlightBannerSection(checkbox) {
+        const sectionBlock = checkbox.closest('.section-block');
+        if (sectionBlock) {
+            sectionBlock.classList.add('banner-section-active');
+            // Add visual indicator
+            const indicator = sectionBlock.querySelector('.banner-indicator');
+            if (!indicator) {
+                const badge = document.createElement('div');
+                badge.className = 'banner-indicator';
+                badge.innerHTML = '<i class="fas fa-crown"></i> Banner Image';
+                sectionBlock.prepend(badge);
+            }
+        }
+    }
+
+    function removeBannerHighlight(checkbox) {
+        const sectionBlock = checkbox.closest('.section-block');
+        if (sectionBlock) {
+            sectionBlock.classList.remove('banner-section-active');
+            const indicator = sectionBlock.querySelector('.banner-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+    }
+
+    initBannerSystem();
+
+
     if (addButton && container) {
         addButton.addEventListener('click', function () {
 

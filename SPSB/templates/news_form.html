@@ -46,7 +46,13 @@
 
                 <!-- 🔥 SECTIONS -->
                 <div class="editor-card">
-                    <h5 class="mb-3">Content Sections</h5>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <h5 class="mb-0">Content Sections</h5>
+                        <small class="badge bg-warning text-dark">
+                            <i class="fas fa-info-circle"></i>
+                            Only ONE image can be set as banner
+                        </small>
+                    </div>
 
                     {{ formset.management_form }}
 
@@ -82,8 +88,28 @@
                                 </div>
 
                                 <!-- DELETE -->
-                                <div class="text-danger">
-                                    {{ form.DELETE }} Delete Section
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        {{ form.DELETE }}
+                                        <label class="form-check-label text-danger">
+                                            Delete Section
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- BANNER CHECKBOX -->
+                                <div class="mb-2">
+                                    <div class="form-check form-switch">
+                                        {{ form.is_banner }}
+                                        <label class="form-check-label banner-label" for="{{ form.is_banner.id_for_label }}">
+                                            <i class="fas fa-crown"></i>
+                                            <span>Set as Banner Image</span>
+                                        </label>
+                                    </div>
+                                    <small class="d-block text-muted ms-4 mt-1">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        This image will be displayed at the top of the article (16:9 ratio recommended)
+                                    </small>
                                 </div>
 
                             </div>

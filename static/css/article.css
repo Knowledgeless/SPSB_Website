@@ -1,0 +1,465 @@
+/* ============================================
+   ARTICLE PAGE - MODERN & PROFESSIONAL STYLING
+   ============================================ */
+
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --accent-color: #ff6b6b;
+    --light-bg: #f8f9fa;
+    --border-color: #e9ecef;
+    --text-dark: #212529;
+    --text-light: #6c757d;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============= BANNER SECTION ============= */
+.banner-section {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--light-bg) 0%, #e9ecef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.banner-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    font-size: 4rem;
+    color: rgba(0, 0, 0, 0.1);
+}
+
+/* ============= ARTICLE HEADER ============= */
+.article-header {
+    background: #fff;
+    border-bottom: 1px solid var(--border-color);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    padding: 0 1rem;
+}
+
+.article-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.meta-date,
+.meta-category {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.meta-date i,
+.meta-category i {
+    color: var(--primary-color);
+}
+
+/* ============= MAIN CONTENT AREA ============= */
+.article-main {
+    padding: 2rem 1rem;
+}
+
+.article-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.article-body {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    letter-spacing: 0.3px;
+    text-align: justify;
+}
+
+.article-body p {
+    margin-bottom: 1.5rem;
+}
+
+.article-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* Media Section (additional images and text) */
+.media-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--light-bg);
+}
+
+.media-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-md);
+}
+
+.section-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-light);
+    padding: 1rem;
+    background: var(--light-bg);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+}
+
+.section-text p {
+    margin-bottom: 1rem;
+}
+
+.section-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* ============= SIDEBAR SECTIONS ============= */
+.sidebar-section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.sidebar-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light-bg);
+}
+
+.sidebar-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.title-text {
+    display: flex;
+    align-items: center;
+}
+
+.title-icon {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-left: 0.5rem;
+}
+
+/* ============= NEWS CARD SIDEBAR ============= */
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.news-card-sidebar {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--light-bg);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+    border-left: 4px solid transparent;
+    height: 100%;
+}
+
+.news-card-sidebar:hover {
+    background: #f0f1f6;
+    border-left-color: var(--primary-color);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.news-card-left {
+    flex-shrink: 0;
+    width: 100px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #e9ecef;
+}
+
+.news-card-left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    color: rgba(0, 0, 0, 0.1);
+    font-size: 1.5rem;
+}
+
+.news-card-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-date {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.card-text {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+}
+
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    transition: var(--transition);
+    margin-top: auto;
+}
+
+.news-card-sidebar:hover .read-more {
+    background: var(--accent-color);
+    transform: translateX(3px);
+}
+
+/* ============= RESPONSIVE DESIGN ============= */
+
+/* Large screens */
+@media (min-width: 1200px) {
+    .article-main {
+        padding: 2rem 2rem;
+    }
+    
+    .article-title {
+        font-size: 2.75rem;
+    }
+}
+
+/* Medium screens */
+@media (max-width: 991.98px) {
+    .article-title {
+        font-size: 2rem;
+    }
+
+    .article-body {
+        font-size: 1rem;
+    }
+
+    .article-content {
+        padding: 1.5rem;
+    }
+}
+
+/* Small screens */
+@media (max-width: 767.98px) {
+    .article-header {
+        padding: 1.5rem 0;
+        margin-bottom: 1.5rem;
+    }
+
+    .article-title {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .article-meta {
+        gap: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .article-main {
+        padding: 1rem 0.5rem;
+    }
+
+    .article-content {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .article-body {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .sidebar-section {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+    }
+
+    .sidebar-title {
+        font-size: 1.125rem;
+    }
+
+    .news-card-sidebar {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+
+    .news-card-left {
+        width: 80px;
+        height: 70px;
+    }
+
+    .card-title {
+        font-size: 0.9rem;
+    }
+
+    .card-text {
+        font-size: 0.8rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 575.98px) {
+    .banner-section {
+        aspect-ratio: 16 / 12;
+    }
+
+    .article-title {
+        font-size: 1.5rem;
+    }
+
+    .article-body {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .article-content {
+        padding: 0.75rem;
+    }
+
+    .media-section {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+    }
+
+    .sidebar-section {
+        padding: 0.75rem;
+    }
+
+    .news-card-sidebar {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .news-card-left {
+        width: 100%;
+        height: 150px;
+    }
+
+    .news-list {
+        gap: 0.75rem;
+    }
+}
+
+/* ============= UTILITY ANIMATIONS ============= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.article-content,
+.sidebar-section {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ============= PRINT STYLES ============= */
+@media print {
+    .sidebar-section {
+        display: none;
+    }
+
+    .article-content {
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
+
+    .banner-section {
+        break-after: avoid;
+    }
+}

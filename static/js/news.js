@@ -1,5 +1,6 @@
 
-function openModal{{ post.id }}(){
-    var modal = new bootstrap.Modal(document.getElementById('modal{{ post.id }}'));
+// Simple modal functions for news cards
+function openModal(postId){
+    var modal = new bootstrap.Modal(document.getElementById('modal' + postId));
     modal.show();
 }
