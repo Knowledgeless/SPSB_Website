@@ -2,6 +2,9 @@ from django.http import JsonResponse
 from django.db import transaction
 import pandas as pd
 from django.db.models import Q
+import os 
+from django.conf import settings
+from django.core.files import File
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember
@@ -222,7 +225,7 @@ def volunteers(request):
     volunteer_year = Volunteer.objects.values_list(
         'volunteer_year', flat=True
     ).distinct().order_by('-volunteer_year')
-    print(page_obj.object_list.query)  # Debugging: Check the final query
+    # print(page_obj.object_list.query)  # Debugging: Check the final query
     return render(request, 'volunteers.html', {
         'page_obj': page_obj,
         'volunteer_year': volunteer_year,
@@ -244,7 +247,6 @@ def upload_volunteers_excel(request):
     if request.method == 'POST' and request.FILES.get('file'):
         excel_file = request.FILES['file']
 
-        # ✅ File validation
         if not excel_file.name.endswith('.xlsx'):
             messages.error(request, "Only .xlsx files are allowed!")
             return redirect('volunteers')
@@ -253,19 +255,19 @@ def upload_volunteers_excel(request):
             df = pd.read_excel(excel_file)
 
             # ✅ Required columns
-            required_columns = ['username', 'first_name', 'last_name', 'email', 'volunteer_year']
+            required_columns = [
+                'username', 'first_name', 'last_name',
+                'email', 'volunteer_year', 'image_path'   # 🔥 ADD THIS COLUMN
+            ]
 
             for col in required_columns:
                 if col not in df.columns:
                     messages.error(request, f"Missing column: {col}")
                     return redirect('volunteers')
 
-            # ✅ Counters (IMPORTANT for debugging)
             created_count = 0
             skipped_count = 0
             duplicate_count = 0
-
-            volunteers_to_create = []
 
             with transaction.atomic():
                 for _, row in df.iterrows():
@@ -273,12 +275,10 @@ def upload_volunteers_excel(request):
                     username = clean_value(row.get('username'), default='')
                     email = clean_value(row.get('email'), default='')
 
-                    # ❌ Skip if no username
                     if not username:
                         skipped_count += 1
                         continue
 
-                    # ❌ Skip duplicates
                     if Volunteer.objects.filter(username=username).exists():
                         duplicate_count += 1
                         continue
@@ -288,6 +288,7 @@ def upload_volunteers_excel(request):
                     except:
                         volunteer_year = 2025
 
+                    # 🔥 CREATE OBJECT FIRST
                     volunteer = Volunteer(
                         username=username,
                         first_name=clean_value(row.get('first_name')),
@@ -300,20 +301,31 @@ def upload_volunteers_excel(request):
                         degree=clean_value(row.get('degree')),
                         phone_number=clean_value(row.get('phone_number')),
 
-                        # 🔥 IMPORTANT FIXES
                         is_public=True,
                         status='active',
-
                         added_by=request.user
                     )
 
-                    volunteers_to_create.append(volunteer)
+                    # 🔥 IMAGE HANDLING
+                    image_path = clean_value(row.get('image_path'), default='')
+
+                    if image_path and image_path != '-':
+                        full_path = os.path.join(settings.MEDIA_ROOT, image_path)
+
+                        if os.path.exists(full_path):
+                            with open(full_path, 'rb') as img_file:
+                                volunteer.profile_image.save(
+                                    os.path.basename(full_path),
+                                    File(img_file),
+                                    save=False
+                                )
+                        else:
+                            print(f"Image not found: {full_path}")
+
+                    # 🔥 IMPORTANT: SAVE INDIVIDUALLY
+                    volunteer.save()
                     created_count += 1
 
-                # ✅ Bulk insert
-                Volunteer.objects.bulk_create(volunteers_to_create)
-
-            # ✅ Final message (VERY IMPORTANT)
             messages.success(
                 request,
                 f"Upload Complete → Created: {created_count}, Skipped: {skipped_count}, Duplicates: {duplicate_count}"
@@ -442,6 +454,5 @@ def logout_view(request):
     logout(request)
     messages.error(request, "You have been logged out.")
     return redirect('home')
-
 
 

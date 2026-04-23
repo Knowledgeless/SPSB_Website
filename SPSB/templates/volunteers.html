@@ -91,7 +91,7 @@
                                 <!-- PHONE (optional preview info) -->
                                 {% if request.user.is_staff %}
                                     <p class="card-text text-muted small mt-2">
-                                        {{ volunteer.phone_number }}
+                                        <span><i class="fa-solid fa-user"></i> {{ volunteer.username }}</span> | <span> <i class="fa-solid fa-phone"></i> {{ volunteer.phone_number }}</span>
                                     </p>
                                 {% endif %}
 
@@ -99,21 +99,19 @@
 
                             <!-- SOCIAL + ACTION -->
                             <div class="article-link d-flex justify-content-center flex-wrap px-2 pb-2 pt-0">
+                                <div class="social-icons">
+                                    <!-- insagram_handle -->
+                                    <a {% if volunteer.instagram_handle %} href="https://www.{{ volunteer.instagram_handle }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-instagram" style="color: rgb(255, 0, 0);"></i> </a>
 
-                                
-                            <div class="social-icons">
-                                <!-- insagram_handle -->
-                                <a {% if volunteer.instagram_handle %} href="https://www.{{ volunteer.instagram_handle }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-instagram" style="color: rgb(255, 0, 0);"></i> </a>
+                                    <!-- linkedin_handle -->
+                                    <a {% if volunteer.linkedin_url %} href="{{ volunteer.linkedin_url }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-linkedin-in" style="color: rgb(31, 79, 163);"></i> </a>
 
-                                <!-- linkedin_handle -->
-                                <a {% if volunteer.linkedin_url %} href="{{ volunteer.linkedin_url }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-linkedin-in" style="color: rgb(31, 79, 163);"></i> </a>
+                                    <!-- twitter_handle -->
+                                    <a {% if volunteer.twitter_handle %} href="https://www.{{ volunteer.twitter_handle }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-x-twitter" style="color: rgb(0, 0, 0);"></i> </a>
 
-                                <!-- twitter_handle -->
-                                <a {% if volunteer.twitter_handle %} href="https://www.{{ volunteer.twitter_handle }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-x-twitter" style="color: rgb(0, 0, 0);"></i> </a>
-
-                                <!-- facebook_handle -->
-                                <a {% if volunteer.facebook_url %} href="{{ volunteer.facebook_url }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-facebook" style="color: rgb(31, 79, 163);"></i> </a>
-                            </div>
+                                    <!-- facebook_handle -->
+                                    <a {% if volunteer.facebook_url %} href="{{ volunteer.facebook_url }}" target="_blank" {% else %} disabled {% endif %} class="m-1"> <i class="fa-brands fa-facebook" style="color: rgb(31, 79, 163);"></i> </a>
+                                </div>
 
                             </div>
 
