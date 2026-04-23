@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.db import transaction
 import pandas as pd
+from django.db.models import Q
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember
@@ -196,22 +197,37 @@ def article(request, id):
 
 def volunteers(request):
     volunteers = Volunteer.objects.filter(is_public=True)
-    print(volunteers[0].username,
-          volunteers[0].first_name,
-          volunteers[0].last_name,
-          volunteers[0].email,
-          volunteers[0].volunteer_year,
-          volunteers[0].role,
-          volunteers[0].institution,
-          volunteers[0].degree,
-          volunteers[0].phone_number,
-          volunteers[0].status,
-          volunteers[0].added_by,
-          volunteers[0].created_at,
-          volunteers[0].updated_at,
-          volunteers[0].is_public,
-          volunteers[0].profile_image)
-    return render(request, 'volunteers.html', {'volunteers': volunteers})
+
+    # SEARCH
+    search = request.GET.get('search')
+    if search:
+        volunteers = volunteers.filter(
+            Q(first_name__icontains=search) |
+            Q(last_name__icontains=search) |
+            Q(phone_number__icontains=search) |
+            Q(username__icontains=search)
+        )
+
+    # YEAR FILTER
+    selected_year = request.GET.get('year')
+    if selected_year:
+        volunteers = volunteers.filter(volunteer_year=selected_year)
+
+    # PAGINATION
+    paginator = Paginator(volunteers.order_by('-volunteer_year'), 12)  # 12 per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # YEARS
+    volunteer_year = Volunteer.objects.values_list(
+        'volunteer_year', flat=True
+    ).distinct().order_by('-volunteer_year')
+    print(page_obj.object_list.query)  # Debugging: Check the final query
+    return render(request, 'volunteers.html', {
+        'page_obj': page_obj,
+        'volunteer_year': volunteer_year,
+        'selected_year': selected_year
+    })
 
 def clean_value(value, default='-'):
     """
