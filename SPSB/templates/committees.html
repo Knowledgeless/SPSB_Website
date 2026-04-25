@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_title %}Volunteers{% endblock page_title %}
+{% block page_title %}Committees{% endblock page_title %}
 
 {% block css_links %}
     <link rel="stylesheet" href="{% static 'css/volunteers.css' %}">
@@ -10,50 +10,214 @@
 {% block content %}
 
 <div class="container">
-        <h2 class="text-center my-4">Our Committee Members</h2>
-        {% if request.user.is_staff %}
-            <div class="text-center mb-4">
-                <form method="POST" action="{% url 'upload_committee_excel' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <span>
-                        <input type="file" name="file" accept=".xlsx" required class="form-control mb-2 w-auto d-inline-block">
-                    </span>
-                    <button type="submit" class="btn btn-primary">
-                        Upload
-                    </button>
-                </form>
-            </div>
-        {% endif %}
-    </div>
+    <h2 class="text-center my-4">Our Committee Members</h2>
+
+    {% if request.user.is_staff %}
+        <div class="text-center mb-4">
+            <form method="POST" action="{% url 'upload_committee_excel' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" accept=".xlsx" required class="form-control mb-2 w-auto d-inline-block">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
 
 
 <div class="container mt-4">
     <div class="row">
-        {% for member in committees %}
-        <div class="col-md-4 mb-3">
 
-            <a href="{% url 'profile' 'committee' member.id %}" class="text-decoration-none text-dark">
+        <!-- LEFT SIDE: COMMITTEE MEMBERS -->
+        <div class="col-lg-9 bg-light p-4 left_panel">
 
-                <div class="card h-100 text-center p-3">
+            <div class="row">
 
-                    {% if member.profile_image %}
-                        <img src="{{ member.profile_image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
-                    {% else %}
-                        <img src="{% static 'default.jpg' %}" class="card-img-top">
-                    {% endif %}
+                {% for member in page_obj %}
+                <div class="col-12 col-md-6 col-lg-4 mb-3 card-container">
 
-                    <div class="card-body">
-                        <h5>{{ member.full_name }}</h5>
-                        <p class="text-muted">{{ member.get_position_display }}</p>
-                        <p>{{ member.department }}</p>
-                    </div>
+                    <a href="{% url 'profile' 'committee' member.id %}" class="text-decoration-none text-dark">
+
+                        <div class="card h-100 shadow-sm volunteer-card">
+
+                            <!-- IMAGE -->
+                            {% if member.profile_image %}
+                                <img src="{{ member.profile_image.url }}"
+                                     class="card-img-top"
+                                     style="height:200px; object-fit:cover;">
+                            {% else %}
+                                <img src="{% static 'default.jpg' %}" class="card-img-top">
+                            {% endif %}
+
+                            <div class="card-body">
+
+                                <!-- NAME -->
+                                <h5 class="card-title">
+                                    {{ member.full_name }}
+                                </h5>
+
+                                <!-- POSITION (DESIGNATION) -->
+                                {% if member.position %}
+                                    <span class="badge bg-primary mb-1">
+                                        {{ member.get_position_display }}
+                                    </span>
+                                {% endif %}
+
+                                <!-- DEPARTMENT -->
+                                <p class="card-text mb-1">
+                                    <small class="text-muted">
+                                        {{ member.department }}
+                                    </small>
+                                </p>
+
+                                <!-- ADMIN INFO -->
+                                {% if request.user.is_staff %}
+                                    <p class="card-text text-muted small mt-2">
+                                        <span><i class="fa-solid fa-user"></i> {{ member.username }}</span> |
+                                        <span><i class="fa-solid fa-envelope"></i> {{ member.email }}</span>
+                                    </p>
+
+                                    {% if member.status == "active" %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% elif member.status == "past" %}
+                                        <span class="badge bg-info">Past</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">{{ member.status|title }}</span>
+                                    {% endif %}
+                                {% endif %}
+
+                            </div>
+
+                            <!-- SOCIAL LINKS -->
+                            <div class="d-flex justify-content-center flex-wrap pb-3">
+
+                                {% if member.instagram_handle %}
+                                <a href="https://www.instagram.com/{{ member.instagram_handle }}" target="_blank" class="m-1">
+                                    <i class="fa-brands fa-instagram text-danger"></i>
+                                </a>
+                                {% endif %}
+
+                                {% if member.linkedin_url %}
+                                <a href="{{ member.linkedin_url }}" target="_blank" class="m-1">
+                                    <i class="fa-brands fa-linkedin-in text-primary"></i>
+                                </a>
+                                {% endif %}
+
+                                {% if member.twitter_handle %}
+                                <a href="https://twitter.com/{{ member.twitter_handle }}" target="_blank" class="m-1">
+                                    <i class="fa-brands fa-x-twitter text-dark"></i>
+                                </a>
+                                {% endif %}
+
+                                {% if member.facebook_url %}
+                                <a href="{{ member.facebook_url }}" target="_blank" class="m-1">
+                                    <i class="fa-brands fa-facebook text-primary"></i>
+                                </a>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE: FILTER + SEARCH -->
+        <div class="col-lg-3 col-md-4">
+
+            <div class="filter-panel">
+
+                <!-- SEARCH -->
+                <form method="GET">
+                    <input type="text"
+                           name="search"
+                           placeholder="Search name / username / department"
+                           value="{{ request.GET.search }}"
+                           class="form-control mb-3">
+                </form>
+
+                <!-- YEAR FILTER -->
+                <h6 class="mb-2">Filter by Year</h6>
+
+                <div class="year-filter">
+
+                    <a href="{% url 'committees' %}"
+                       class="btn btn-sm {% if not selected_year %}active{% endif %}">
+                        <i class="fa-solid fa-sliders"></i> All
+                    </a>
+
+                    {% for year in committee_years %}
+                        <a href="?year={{ year }}"
+                           class="btn btn-sm {% if selected_year == year %}active{% endif %}">
+                            {{ year }}
+                        </a>
+                    {% endfor %}
 
                 </div>
 
-            </a>
+            </div>
 
         </div>
-        {% endfor %}
+
     </div>
 </div>
-{% endblock %}
+
+
+<!-- PAGINATION -->
+{% if page_obj.has_other_pages %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        <!-- PREVIOUS -->
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
+                    &laquo;
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+        {% endif %}
+
+        <!-- PAGE NUMBERS -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- NEXT -->
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
+                    &raquo;
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+
+{% endblock content %}
+
+<script src="{% static 'js/news.js' %}"></script>

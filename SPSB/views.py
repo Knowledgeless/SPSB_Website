@@ -2,14 +2,11 @@ from django.http import JsonResponse
 from django.db import transaction
 import pandas as pd
 from django.db.models import Q
-<<<<<<< HEAD
+from django.db.models import Case, When, IntegerField
+
 import os 
 from django.conf import settings
 from django.core.files import File
-=======
-import os
-from django.conf import settings
->>>>>>> 1e4f638 (committee upload done)
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember
@@ -343,9 +340,66 @@ def upload_volunteers_excel(request):
 
     return redirect('volunteers')
 
+from django.core.paginator import Paginator
+from django.db.models import Q, Case, When, IntegerField
+
 def committees(request):
+
+
+    POSITION_ORDER = Case(
+        When(position="president", then=0),
+        When(position="vice_president", then=1),
+        When(position="secretary", then=2),
+        When(position="general_secretary", then=3),
+        When(position="joint_secretary", then=4),
+        When(position="treasurer", then=5),
+        When(position="coordinator", then=6),
+        When(position="program_officer", then=7),
+        When(position="senior_program_officer", then=8),
+        When(position="program_associate", then=9),
+        When(position="member", then=10),
+        When(position="academic_councilor", then=11),
+        default=12,
+        output_field=IntegerField()
+    )
+
     committees = CommitteeMember.objects.filter(is_public=True)
-    return render(request, 'committees.html', {'committees': committees})
+
+    # ---------------- SEARCH ----------------
+    search = request.GET.get('search')
+    if search:
+        committees = committees.filter(
+            Q(first_name__icontains=search) |
+            Q(last_name__icontains=search) |
+            Q(username__icontains=search) |
+            Q(department__icontains=search)
+        )
+
+    # ---------------- YEAR FILTER ----------------
+    selected_year = request.GET.get('year')
+    if selected_year:
+        committees = committees.filter(committee_year=selected_year)
+
+    # ---------------- ORDER (IMPORTANT FIX) ----------------
+    committees = committees.annotate(
+        pos_order=POSITION_ORDER
+    ).order_by('pos_order', 'first_name')
+
+    # ---------------- PAGINATION ----------------
+    paginator = Paginator(committees, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # ---------------- YEARS ----------------
+    committee_years = CommitteeMember.objects.values_list(
+        'committee_year', flat=True
+    ).distinct().order_by('-committee_year')
+
+    return render(request, 'committees.html', {
+        'page_obj': page_obj,
+        'committee_years': committee_years,
+        'selected_year': selected_year
+    })
 
 
 login_required
