@@ -68,3 +68,81 @@
     color: black;
     font-size: 18px;
 }
+
+
+/* css for footer */
+
+/* .my-footer {
+    border-radius: 5px;
+} */
+
+#about a {
+    text-decoration: none;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+#about a:hover {
+    color: rgb(22, 22, 238);
+    transition: transform 0.3s ease;
+}
+
+
+/* input field */
+#subscribeBox input {
+    background: #333 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#subscribeBox input::placeholder {
+    color: #ccc !important;
+}
+
+#subscribeBox button {
+    background: white !important;
+    color: black !important;
+    border: none !important;
+    border-radius: 4px;
+
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-57%);
+    padding: 6px 12px;
+}
+
+#subscribeBox {
+    position: relative;
+    width: 300px;
+    padding-bottom: 4px;
+}
+
+#subscribeBox input {
+    width: 100%;
+    padding-right: 110px;
+}
+
+/* #subscribeBox button {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    padding: 6px 12px;
+} */
+
+
+#links a{
+    background-color: #333;
+    padding: 7px 10px;
+    border-radius: 50%;
+}
+
+a#fb:hover { color: #1877f2; }
+a#ig:hover { color: #e4405f; }
+a#x:hover { color: #000; }
+a#yt:hover { color: #ff0000; }
+a#ln:hover { color: #0a66c2; }

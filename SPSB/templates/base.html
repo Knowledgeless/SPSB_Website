@@ -29,7 +29,7 @@
             <i class="bi bi-list fs-4 d-block d-md-none" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"></i> 
             <h2 class="myLogo">Logo</h2>
         </div>
-        <div class="my-navbar d-none d-md-flex align-items-center gap-4"> 
+        <div class="my-navbar d-none d-md-flex align-items-center px-4 me-3" style="gap: 34px;"> 
             <a class="nav-link " href="{% url "home" %}">Home</a>
             <a class="nav-link " href="{% url "news" %}">News</a>
             <a class="nav-link " href="">Gallery</a>
@@ -93,6 +93,50 @@
     <script src="{% static 'js/myBase.js' %}"></script>
     {% block js_links %}    {% endblock js_links %}
 
-    
+    <footer id="about" class="my-footer m-2 bg-black rounded-2 d-flex text-light row gap-5" style="height: 200px;">
+        <div class="m-2 col d-flex flex-column justify-content-between">
+            <div>
+                <h1>BDSN</h1>
+                <p class="lh-sm fw-lighter" style="font-size: 14px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, commodi.</p>
+            </div>
+            <div class="d-flex gap-3" style="font-size: 14px;">
+                <p class="mb-2">Privacy Policy</p>
+                <p class="mb-2">Terms of Services</p>
+            </div>
+        </div>
+        <div class="m-2 col d-flex flex-column justify-content-between gap-2">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column" style="font-size: 13px;">
+                    <p class="fw-semibold" style="font-size: 14px;">About</p>
+                    <a class="mb-2">About Us</a> 
+                    <a class="mb-2">Blog</a>
+                    <a class="mb-2">Volunteers</a>
+                </div>
+                <div class="d-flex flex-column" style="font-size: 13px;">
+                    <p class="fw-semibold" style="font-size: 14px;">Support</p>
+                    <a class="mb-2">Contact Us</a>
+                    <a class="mb-2">Terms & Conditions</a>
+                    <a class="mb-2">FAQ</a>
+                </div>
+            </div>
+            <p class="text-center mb-2" style="font-size: 12px;"><i class="bi bi-c-circle"></i>2026 BDSN. All rights reserved.</p>
+        </div>
+        <div class="m-2 col">
+            <div class="ps-2 d-flex flex-column" style="font-size: 13px;">
+                <p class="fw-semibold ms-1" style="font-size: 14px;">Get Updates</p>
+                <div id="subscribeBox" class="ms-1">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="button">Subscribe</button>
+                </div>
+                <div id="links" class="mt-2 px-1 py-2 d-flex justify-content-between align-items-center" style="width: 310px;">
+                    <a id="fb" href=""><i class="bi bi-facebook"></i></a>
+                    <a id="ig" href=""><i class="bi bi-instagram"></i></a>
+                    <a id="x" href=""><i class="bi bi-twitter-x"></i></a>
+                    <a id="yt" href=""><i class="bi bi-youtube"></i></a>
+                    <a id="ln" href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
