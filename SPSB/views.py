@@ -340,8 +340,6 @@ def upload_volunteers_excel(request):
 
     return redirect('volunteers')
 
-from django.core.paginator import Paginator
-from django.db.models import Q, Case, When, IntegerField
 
 def committees(request):
 
@@ -402,7 +400,7 @@ def committees(request):
     })
 
 
-login_required
+@login_required
 def upload_committee_excel(request):
     if request.method == 'POST' and request.FILES.get('file'):
         excel_file = request.FILES['file']

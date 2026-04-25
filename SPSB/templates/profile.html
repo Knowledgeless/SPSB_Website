@@ -1,52 +1,131 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_title %} {{ profile.obj.full_name }} Profile {% endblock page_title %}
+{% block page_title %}
+{{ profile_obj.full_name }} | Profile
+{% endblock page_title %}
 
 {% block css_links %}
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock css_links %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row justify-content-center">
 
+<div class="profile-wrapper container py-4">
+
+
+<!-- ================= TOP PROFILE HEADER ================= -->
+<div class="profile-header card shadow-sm p-4">
+
+    <div class="row align-items-center">
+
+        <!-- PROFILE IMAGE -->
+        <div class="col-md-3 text-center">
+            {% if profile_obj.profile_image %}
+                <img src="{{ profile_obj.profile_image.url }}" class="profile-img">
+            {% else %}
+                <img src="{% static 'default_profile.png' %}" class="profile-img">
+            {% endif %}
+        </div>
+
+        <!-- BASIC INFO -->
         <div class="col-md-6">
-            <div class="card shadow-sm text-center p-3">
+            <h2 class="mb-1">{{ profile_obj.full_name }}</h2>
 
-                <!-- IMAGE -->
-                {% if profile_obj.profile_image %}
-                    <img src="{{ profile_obj.profile_image.url }}" class="rounded-circle mx-auto" style="width:150px; height:150px; object-fit:cover;">
-                {% else %}
-                    <img src="{% static 'default_profile.png' %}" class="rounded-circle mx-auto" style="width:150px;">
-                {% endif %}
+            {% if type == "volunteer" %}
+                <span class="badge bg-success">{{ profile_obj.role }}</span>
+            {% else %}
+                <span class="badge bg-primary">{{ profile_obj.get_position_display }}</span>
+            {% endif %}
 
-                <!-- NAME -->
-                <h4 class="mt-3">{{ profile_obj.full_name }}</h4>
+            <p class="text-muted mt-2">
+                <i class="bi bi-building"></i>
+                {{ profile_obj.institution }}
+            </p>
 
-                <!-- ROLE / POSITION -->
+            <p class="text-muted">
                 {% if type == "volunteer" %}
-                    <p class="text-muted">{{ profile_obj.role }}</p>
+                    {{ profile_obj.degree }}
                 {% else %}
-                    <p class="text-muted">{{ profile_obj.get_position_display }}</p>
+                    {{ profile_obj.qualification }}
                 {% endif %}
+            </p>
+        </div>
 
-                <!-- INSTITUTION -->
-                <p>{{ profile_obj.institution }}</p>
-
-                <!-- BIO -->
-                <p class="mt-3">{{ profile_obj.bio }}</p>
-
-                <!-- SOCIAL -->
-                <div class="mt-3">
-                    {% if profile_obj.linkedin_url %}
-                        <a href="{{ profile_obj.linkedin_url }}" target="_blank">LinkedIn</a>
-                    {% endif %}
-                </div>
-
-            </div>
+        <!-- SOCIAL LINKS -->
+        <div class="col-md-3 text-md-end social-links">
+            {% if profile_obj.linkedin_url %}
+                <a href="{{ profile_obj.linkedin_url }}" target="_blank">LinkedIn</a>
+            {% endif %}
+            {% if profile_obj.website_url %}
+                <a href="{{ profile_obj.website_url }}" target="_blank">Website</a>
+            {% endif %}
         </div>
 
     </div>
 </div>
+
+<!-- ================= PUBLIC INFO SECTION ================= -->
+<div class="row mt-4">
+
+    <div class="col-md-8">
+
+        <div class="card p-4 shadow-sm mb-3">
+            <h5>About</h5>
+            <p>{{ profile_obj.bio|default:"No bio available." }}</p>
+        </div>
+
+        <div class="card p-4 shadow-sm mb-3">
+            <h5>Contribution Details</h5>
+
+            {% if type == "volunteer" %}
+                <p><b>Role:</b> {{ profile_obj.role }}</p>
+                <p><b>Volunteer Year:</b> {{ profile_obj.volunteer_year }}</p>
+                <p><b>Contribution Hours:</b> {{ profile_obj.contribution_hours }}</p>
+            {% else %}
+                <p><b>Position:</b> {{ profile_obj.get_position_display }}</p>
+                <p><b>Committee Year:</b> {{ profile_obj.committee_year }}</p>
+                <p><b>Department:</b> {{ profile_obj.department }}</p>
+            {% endif %}
+
+            <p><b>Status:</b> {{ profile_obj.get_status_display }}</p>
+        </div>
+
+    </div>
+
+    <!-- ================= ADMIN ONLY INFO ================= -->
+    {% if user.is_staff %}
+
+    <div class="col-md-4">
+
+        <div class="card p-4 shadow-sm admin-box">
+            <h5 class="text-danger">Admin Private Data</h5>
+
+            <p><b>Email:</b> {{ profile_obj.email }}</p>
+            <p><b>Phone:</b> {{ profile_obj.phone_number }}</p>
+            <p><b>DOB:</b> {{ profile_obj.date_of_birth }}</p>
+
+            <hr>
+
+            <p><b>Address:</b><br>
+                {{ profile_obj.address }}<br>
+                {{ profile_obj.city }}, {{ profile_obj.state }} - {{ profile_obj.zip_code }}
+            </p>
+
+            <hr>
+
+            <p><b>Emergency Contact:</b><br>
+                {{ profile_obj.emergency_contact_name }}<br>
+                {{ profile_obj.emergency_contact_phone }}
+            </p>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+</div>
+
 {% endblock %}
