@@ -2,9 +2,14 @@ from django.http import JsonResponse
 from django.db import transaction
 import pandas as pd
 from django.db.models import Q
+<<<<<<< HEAD
 import os 
 from django.conf import settings
 from django.core.files import File
+=======
+import os
+from django.conf import settings
+>>>>>>> 1e4f638 (committee upload done)
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember
@@ -342,7 +347,8 @@ def committees(request):
     committees = CommitteeMember.objects.filter(is_public=True)
     return render(request, 'committees.html', {'committees': committees})
 
-@login_required
+
+login_required
 def upload_committee_excel(request):
     if request.method == 'POST' and request.FILES.get('file'):
         excel_file = request.FILES['file']
@@ -354,46 +360,84 @@ def upload_committee_excel(request):
         try:
             df = pd.read_excel(excel_file)
 
-            required_columns = ['username', 'first_name', 'last_name', 'email', 'committee_year']
+            # ✅ REQUIRED COLUMNS
+            required_columns = [
+                'username', 'first_name', 'last_name',
+                'email', 'committee_year', 'image_path'
+            ]
 
             for col in required_columns:
                 if col not in df.columns:
                     messages.error(request, f"Missing column: {col}")
                     return redirect('committees')
 
-            members_to_create = []
+            created_count = 0
+            skipped_count = 0
+            duplicate_count = 0
 
             with transaction.atomic():
                 for _, row in df.iterrows():
 
-                    username = str(row.get('username', '')).strip()
-                    email = str(row.get('email', '')).strip()
+                    username = clean_value(row.get('username'))
+                    email = clean_value(row.get('email'))
 
                     if not username:
+                        skipped_count += 1
                         continue
 
                     if CommitteeMember.objects.filter(username=username).exists():
+                        duplicate_count += 1
                         continue
+
+                    # SAFE INT
+                    try:
+                        committee_year = int(row.get('committee_year', 2025))
+                    except:
+                        committee_year = 2025
 
                     member = CommitteeMember(
                         username=username,
-                        first_name=row.get('first_name', '-') or '-',
-                        last_name=row.get('last_name', '-') or '-',
+                        first_name=clean_value(row.get('first_name'), '-'),
+                        last_name=clean_value(row.get('last_name'), '-'),
                         email=email if email else f"{username}@example.com",
-                        committee_year=int(row.get('committee_year', 2025)),
+                        committee_year=committee_year,
 
-                        position=row.get('position', 'member'),
-                        department=row.get('department', '-'),
-                        phone_number=row.get('phone_number', '-'),
+                        position=clean_value(row.get('position'), 'member'),
+                        department=clean_value(row.get('department'), '-'),
+                        phone_number=clean_value(row.get('phone_number'), '-'),
 
+                        institution=clean_value(row.get('institution')),
+                        qualification=clean_value(row.get('qualification')),
+
+                        is_public=True,
+                        status='active',
                         added_by=request.user
                     )
 
-                    members_to_create.append(member)
+                    # 🔥 IMAGE HANDLING
+                    image_path = clean_value(row.get('image_path'))
 
-                CommitteeMember.objects.bulk_create(members_to_create)
+                    if image_path:
+                        full_path = os.path.join(settings.MEDIA_ROOT, image_path)
 
-            messages.success(request, f"{len(members_to_create)} Committee members uploaded!")
+                        if os.path.exists(full_path):
+                            with open(full_path, 'rb') as img:
+                                member.profile_image.save(
+                                    os.path.basename(full_path),
+                                    File(img),
+                                    save=False
+                                )
+                        else:
+                            print(f"[WARNING] Image not found: {full_path}")
+
+                    # ✅ IMPORTANT: SAVE ONE BY ONE
+                    member.save()
+                    created_count += 1
+
+            messages.success(
+                request,
+                f"Upload Complete → Created: {created_count}, Skipped: {skipped_count}, Duplicates: {duplicate_count}"
+            )
 
         except Exception as e:
             messages.error(request, f"Error: {str(e)}")
@@ -401,6 +445,20 @@ def upload_committee_excel(request):
         return redirect('committees')
 
     return redirect('committees')
+
+
+def profile(request, type, id):
+    if type == "volunteer":
+        profile_obj = get_object_or_404(Volunteer, id=id, is_public=True)
+    elif type == "committee":
+        profile_obj = get_object_or_404(CommitteeMember, id=id, is_public=True)
+    else:
+        return redirect('home')
+
+    return render(request, 'profile.html', {
+        'profile_obj': profile_obj,
+        'type': type
+    })
 
 
 @login_required

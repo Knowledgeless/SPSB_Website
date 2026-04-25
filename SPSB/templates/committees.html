@@ -8,8 +8,52 @@
 {% endblock css_links %}
 
 {% block content %}
-    <div class="container">
-        <h1>Committees</h1> <!-- Updated title to "Committees" -->
-        <p>Welcome to the Committees page!</p> <!-- Updated welcome message -->
+
+<div class="container">
+        <h2 class="text-center my-4">Our Committee Members</h2>
+        {% if request.user.is_staff %}
+            <div class="text-center mb-4">
+                <form method="POST" action="{% url 'upload_committee_excel' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <span>
+                        <input type="file" name="file" accept=".xlsx" required class="form-control mb-2 w-auto d-inline-block">
+                    </span>
+                    <button type="submit" class="btn btn-primary">
+                        Upload
+                    </button>
+                </form>
+            </div>
+        {% endif %}
     </div>
-{% endblock content %}
+
+
+<div class="container mt-4">
+    <div class="row">
+        {% for member in committees %}
+        <div class="col-md-4 mb-3">
+
+            <a href="{% url 'profile' 'committee' member.id %}" class="text-decoration-none text-dark">
+
+                <div class="card h-100 text-center p-3">
+
+                    {% if member.profile_image %}
+                        <img src="{{ member.profile_image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+                    {% else %}
+                        <img src="{% static 'default.jpg' %}" class="card-img-top">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5>{{ member.full_name }}</h5>
+                        <p class="text-muted">{{ member.get_position_display }}</p>
+                        <p>{{ member.department }}</p>
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

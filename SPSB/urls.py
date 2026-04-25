@@ -36,7 +36,9 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('upload-volunteers/', views.upload_volunteers_excel, name='upload_volunteers_excel'),
     path('upload-committee/', views.upload_committee_excel, name='upload_committee_excel'),
+    path('profile/<str:type>/<int:id>/', views.profile, name='profile'),
 ]
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
