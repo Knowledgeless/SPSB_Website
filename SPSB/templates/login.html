@@ -3,12 +3,13 @@
 {% block page_title %}Login{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Login</h3>
+<div class="m-2 rounded-2" style="background-color: rgb(229, 228, 228);">
+    <div class="row w-100" style="height: 95vh;">
+        <div class="col-md-6 d-flex align-items-center justify-content-center gap-4 my-auto mx-auto p-2 rounded-4 bg-white" style="width: 800px; height: 450px;">
+            <div class="w-50 h-100 p-5">
+                <div class="mb-4">
+                    <h3 class="">SPSB</h3>
+                    <h3 class="">Hello, Welcome Back</h3>
                 </div>
                 <div class="card-body">
                     {% if messages %}
@@ -22,7 +23,7 @@
                     <form method="post">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                            <label for="{{ form.username.id_for_label }}" class="form-label"></label>
                             {{ form.username }}
                             {% if form.username.errors %}
                                 <div class="text-danger">
@@ -33,7 +34,7 @@
                             {% endif %}
                         </div>
                         <div class="mb-3">
-                            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+                            <label for="{{ form.password.id_for_label }}" class="form-label"></label>
                             {{ form.password }}
                             {% if form.password.errors %}
                                 <div class="text-danger">
@@ -43,9 +44,27 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <!-- remember me -->
+                        <div class="d-flex justify-content-between align-items-center small mb-4">
+                            <div class="form-check m-0">
+                                <input class="form-check-input" type="checkbox" value="" id="checkChecked">
+                                <label class="form-check-label" for="checkChecked">
+                                    Remember me
+                                </label>
+                            </div>
+                            <!-- forgot password -->
+                            <a class="small text-decoration-none" href="">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-4 px-4">Sign In</button>
+                        <div class="small">
+                            <span>Don't have any account?</span>
+                            <a href="" class="text-decoration-none">Sign Up</a>
+                        </div>
                     </form>
                 </div>
+            </div>
+            <div class="rounded-4 w-50 h-100">
+                <img src="/media/login.webp" alt="" class="w-100 h-100 rounded-4">
             </div>
         </div>
     </div>
