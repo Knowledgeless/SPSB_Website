@@ -134,13 +134,26 @@
                     <!-- STATUS CARD -->
                     <div class="editor-card status-card mb-3 p-3">
                         <h6 class="mb-3">Status</h6>
+
                         <div class="status-buttons d-flex gap-2 flex-wrap">
+
                             {% for value, label in form.status.field.choices %}
-                            <label class="btn btn-outline-secondary status-btn status-{{ value }} {% if form.status.value == value %} active {% endif %}" data-status="{{ value }}">
-                                <input type="radio" name="status" value="{{ value }}" {% if form.status.value == value %}checked{% endif %} class="d-none">
-                                {{ label | title }}
+
+                            <label class="btn btn-outline-secondary status-btn status-{{ value }}
+                                {% if form.status.value == value|stringformat:'s' %} active {% endif %}"
+                                data-status="{{ value }}">
+
+                                <input type="radio"
+                                    name="status"
+                                    value="{{ value }}"
+                                    class="d-none"
+                                    {% if form.status.value == value|stringformat:'s' %} class='active value 'checked {% endif %}>
+                                {{ label|title }}
+
                             </label>
+
                             {% endfor %}
+
                         </div>
                     </div>
 

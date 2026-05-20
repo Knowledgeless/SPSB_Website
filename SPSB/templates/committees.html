@@ -154,7 +154,7 @@
 
                     {% for year in committee_years %}
                         <a href="?year={{ year }}"
-                           class="btn btn-sm {% if selected_year == year %}active{% endif %}">
+                           class="btn btn-sm {% if selected_year == year|stringformat:"s" %}active{% endif %}">
                             {{ year }}
                         </a>
                     {% endfor %}

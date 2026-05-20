@@ -19,6 +19,9 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('home/', views.home, name='home'),
@@ -37,6 +40,9 @@ urlpatterns = [
     path('upload-volunteers/', views.upload_volunteers_excel, name='upload_volunteers_excel'),
     path('upload-committee/', views.upload_committee_excel, name='upload_committee_excel'),
     path('profile/<str:type>/<int:id>/', views.profile, name='profile'),
+    path('error/<int:code>/', views.error, name='error'),
+    path('about/', views.about, name='about'),
+    path('leader/update/<int:pk>/', views.update_leader, name='update_leader'),
 ]
 
 

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}Error{% endblock page_title %}
+{% block links %} <link rel="stylesheet" href="{% static 'css/error.css' %}"> {% endblock links %}
+
+{% block content %}
+
+<div class="text-center">
+
+    <!-- BIG ERROR CODE -->
+    <h1 class="error-code">{{ error_code|default:"404" }}</h1>
+
+    <!-- IMAGE + FLOATING ELEMENTS -->
+    <div class="error-visual">
+
+        <img src="{% static 'image/error_page.png' %}" class="main-img">
+        WTF
+        <!-- FLOATING SHAPES -->
+        <span class="shape shape1"></span>
+        <span class="shape shape2"></span>
+        <span class="shape shape3"></span>
+        <span class="shape shape4"></span>
+        <span class="shape shape5"></span>
+
+    </div>
+
+    {% comment %} <!-- MESSAGE -->
+    <h4 class="mt-4">Oops! Something went wrong</h4>
+    <p class="text-muted">
+        The page you're looking for doesn't exist or an error occurred.
+    </p>
+
+    <!-- ACTION -->
+    <a href="{% url 'home' %}" class="btn btn-dark mt-3 px-4">
+        Back to Home
+    </a> {% endcomment %}
+
+</div>
+
+{% endblock %}

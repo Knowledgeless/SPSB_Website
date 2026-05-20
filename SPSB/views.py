@@ -9,7 +9,7 @@ from django.conf import settings
 from django.core.files import File
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember
+from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember, LeadershipMessage
 from .forms import NewsPostForm
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
@@ -17,16 +17,57 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator
 
 from django.utils import timezone
 from .forms import NewsPostForm, NewsPostMediaFormSet
 
 # Create your views here.
+
 def home(request):
-    return render(request, 'home.html')
 
+    def get_leader(position):
+        obj, created = LeadershipMessage.objects.get_or_create(
+            position=position,
+            defaults={
+                "name": "",
+                "designation": "",
+                "organization": "",
+                "description": ""
+            }
+        )
+        return obj
 
-from django.core.paginator import Paginator
+    leaders = {
+        "president": get_leader("president"),
+        "vice_president": get_leader("vice_president"),
+        "general_secretary": get_leader("general_secretary"),
+    }
+
+    return render(request, "home.html", {
+        "latest_news": NewsPost.objects.filter(status="published")[:6],
+        "leaders": leaders
+    })
+
+def update_leader(request, pk):
+
+    if request.method == "POST" and request.user.is_staff:
+        leader = get_object_or_404(LeadershipMessage, pk=pk)
+        leader.name = request.POST.get("name")
+        leader.designation = request.POST.get("designation")
+        leader.organization = request.POST.get("organization")
+        leader.description = request.POST.get("description")
+
+        # SAFE FILE HANDLING (FIX)
+        image_files = request.FILES.getlist("image")
+
+        if image_files:
+            leader.image = image_files[0]
+        leader.save()
+    return redirect("home")
+
+def about(request):
+    return render(request, 'about.html')
 
 @never_cache
 def news(request):
@@ -549,7 +590,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Welcome back, {username}!")
-                return redirect('news')
+                return redirect('home')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -566,3 +607,19 @@ def logout_view(request):
     return redirect('home')
 
 
+def error(request, code=404):
+    return render(request, 'error.html', {
+        'error_code': code
+    })
+
+def error_404(request, exception):
+    return render(request, 'error.html', {'error_code': 404})
+
+def error_500(request):
+    return render(request, 'error.html', {'error_code': 500})
+
+def error_403(request, exception):
+    return render(request, 'error.html', {'error_code': 403})
+
+def error_400(request, exception):
+    return render(request, 'error.html', {'error_code': 400})

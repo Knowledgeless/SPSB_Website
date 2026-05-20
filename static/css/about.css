@@ -1,0 +1,13 @@
+.about-title{
+    font-family: var(--title-font);
+    font-weight: var(--p-weight) !important;
+}
+
+.about-content{
+    font-family: var(--p-font);
+    font-weight: var(--p-weight) !important;
+    font-size: 70px;
+    line-height: 1.6;
+    color: #333;
+    margin-top: 20px;
+}

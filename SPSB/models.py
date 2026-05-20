@@ -400,4 +400,25 @@ class CommitteeMember(models.Model):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
     
-    
+
+class LeadershipMessage(models.Model):
+
+    POSITION_CHOICES = [
+        ('president', 'President'),
+        ('vice_president', 'Vice President'),
+        ('general_secretary', 'General Secretary'),
+    ]
+
+    position = models.CharField(max_length=50, choices=POSITION_CHOICES, unique=True)
+
+    name = models.CharField(max_length=150)
+    designation = models.CharField(max_length=150, blank=True, default="")
+    organization = models.CharField(max_length=255, blank=True, default="")
+    description = models.TextField(blank=True, default="")
+
+    image = models.ImageField(upload_to="leaders/", blank=True, null=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.get_position_display()

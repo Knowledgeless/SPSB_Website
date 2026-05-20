@@ -11,7 +11,7 @@
 }
 
 .filter-container {
-    background: #f8f9fa;
+    background: #ffffff;
     padding: 15px 0;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -26,7 +26,7 @@
     padding: 3px 20px;
     border-radius: 20px !important;
     background-color: #0d6efd;
-    color: white;
+    color: white !important;
 }
 
 .filter .btn:focus {
@@ -110,8 +110,11 @@
 
 .article-link .btn {
     display: block;
-    margin-top: 10px;
+    margin: 10px 0;
+    background-color: transparent !important;
+    font-size: 16px;
     font-weight: 500;
+    border: 0 !important;
     border-radius: 0 !important;
     text-decoration: none;
     transition: color 0.2s ease;

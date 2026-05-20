@@ -14,37 +14,36 @@
 
 <div class="profile-wrapper container py-4">
 
-
 <!-- ================= TOP PROFILE HEADER ================= -->
 <div class="profile-header card shadow-sm p-4">
 
-    <div class="row align-items-center">
+    <div class="row align-items-center text-center text-md-start">
 
         <!-- PROFILE IMAGE -->
-        <div class="col-md-3 text-center">
+        <div class="col-12 col-md-3 mb-3 mb-md-0">
             {% if profile_obj.profile_image %}
-                <img src="{{ profile_obj.profile_image.url }}" class="profile-img">
+                <img src="{{ profile_obj.profile_image.url }}" class="profile-img img-fluid">
             {% else %}
-                <img src="{% static 'default_profile.png' %}" class="profile-img">
+                <img src="{% static 'default_profile.png' %}" class="profile-img img-fluid">
             {% endif %}
         </div>
 
         <!-- BASIC INFO -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
             <h2 class="mb-1">{{ profile_obj.full_name }}</h2>
 
             {% if type == "volunteer" %}
-                <span class="badge bg-success">{{ profile_obj.role }}</span>
+                <span class="badge bg-success">{{ profile_obj.role }} | SPSB</span>
             {% else %}
-                <span class="badge bg-primary">{{ profile_obj.get_position_display }}</span>
+                <span class="badge bg-primary">{{ profile_obj.get_position_display }} | SPSB</span>
             {% endif %}
 
-            <p class="text-muted mt-2">
+            <p class="text-muted mt-2 mb-1">
                 <i class="bi bi-building"></i>
                 {{ profile_obj.institution }}
             </p>
 
-            <p class="text-muted">
+            <p class="text-muted mb-0">
                 {% if type == "volunteer" %}
                     {{ profile_obj.degree }}
                 {% else %}
@@ -54,13 +53,15 @@
         </div>
 
         <!-- SOCIAL LINKS -->
-        <div class="col-md-3 text-md-end social-links">
-            {% if profile_obj.linkedin_url %}
-                <a href="{{ profile_obj.linkedin_url }}" target="_blank">LinkedIn</a>
-            {% endif %}
-            {% if profile_obj.website_url %}
-                <a href="{{ profile_obj.website_url }}" target="_blank">Website</a>
-            {% endif %}
+        <div class="col-12 col-md-3 text-center text-md-end social-links">
+            <div class="d-flex justify-content-center justify-content-md-end gap-2 flex-wrap">
+                {% if profile_obj.linkedin_url %}
+                    <a href="{{ profile_obj.linkedin_url }}" target="_blank" class="btn btn-sm btn-outline-primary">LinkedIn</a>
+                {% endif %}
+                {% if profile_obj.website_url %}
+                    <a href="{{ profile_obj.website_url }}" target="_blank" class="btn btn-sm btn-outline-dark">Website</a>
+                {% endif %}
+            </div>
         </div>
 
     </div>
@@ -69,14 +70,14 @@
 <!-- ================= PUBLIC INFO SECTION ================= -->
 <div class="row mt-4">
 
-    <div class="col-md-8">
+    <div class="col-12 col-lg-8">
 
-        <div class="card p-4 shadow-sm mb-3">
+        <div class="card p-3 p-md-4 shadow-sm mb-3">
             <h5>About</h5>
-            <p>{{ profile_obj.bio|default:"No bio available." }}</p>
+            <p class="mb-0">{{ profile_obj.bio|default:"No bio available." }}</p>
         </div>
 
-        <div class="card p-4 shadow-sm mb-3">
+        <div class="card p-3 p-md-4 shadow-sm mb-3">
             <h5>Contribution Details</h5>
 
             {% if type == "volunteer" %}
@@ -97,9 +98,9 @@
     <!-- ================= ADMIN ONLY INFO ================= -->
     {% if user.is_staff %}
 
-    <div class="col-md-4">
+    <div class="col-12 col-lg-4">
 
-        <div class="card p-4 shadow-sm admin-box">
+        <div class="card p-3 p-md-4 shadow-sm admin-box">
             <h5 class="text-danger">Admin Private Data</h5>
 
             <p><b>Email:</b> {{ profile_obj.email }}</p>
@@ -128,4 +129,4 @@
 </div>
 </div>
 
-{% endblock %}
+{% endblock content %}

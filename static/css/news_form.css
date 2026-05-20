@@ -55,7 +55,6 @@
 }
 
 
-
 /* upload media css */
 .drop-zone {
     border: 2px dashed #ccc;
@@ -215,20 +214,15 @@
 
 .status-draft.active {
     border-color: #fd7e14 !important;
-    box-shadow: 0 4px 12px rgba(253, 126, 20, 0.3);
 }
 
 .status-published.active {
     border-color: #198754 !important;
-    box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
 }
 
 .status-archived.active {
     border-color: #dc3545 !important;
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
 }
-
-
 
 
 

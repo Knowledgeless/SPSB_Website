@@ -21,3 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('SPSB.urls')),
 ]
+
+handler404 = 'SPSB.views.error_404'
+handler500 = 'SPSB.views.error_500'
+handler403 = 'SPSB.views.error_403'
+handler400 = 'SPSB.views.error_400'

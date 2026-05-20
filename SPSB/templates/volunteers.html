@@ -26,7 +26,8 @@
     </div>
 
 
-    <div class="container mt-4">
+    {% if page_obj %}
+        <div class="container mt-4">
         <div class="row">
 
             <!-- LEFT SIDE: VOLUNTEERS -->
@@ -136,16 +137,14 @@
 
                         {% for year in volunteer_year %}
                             <a href="?year={{ year }}"
-                            class="btn btn-sm {% if selected_year == year %}active {% endif %}">{{ year }}</a>
+                            class="btn btn-sm {% if selected_year == year|stringformat:"s" %}active{% endif %}">{{ year }}</a>
                         {% endfor %}
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </div>
+    {% endif %}
 
 
     <!-- PAGINATION -->

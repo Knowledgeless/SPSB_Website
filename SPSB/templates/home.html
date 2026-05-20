@@ -1,7 +1,256 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block page_title %}Home{% endblock page_title %}
 
+{% block css_links %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock css_links %}
+
+{% block body_class %}home-page{% endblock %}
+
 {% block content %}
-    <h1>Welcome to the Home Page</h1>
-    <p>This is the home page of our website.</p>
-{% endblock content %}
+    <!-- <h1>Welcome to the Home Page</h1>
+    <p>This is the home page of our website.</p> -->
+    <section class="hero m-2">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#carouselExampleInterval" data-bs-slide-to="2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="10000">
+                        <img src="../../media/hero/hero01.jpg" class="d-block w-100 rounded" alt="...">
+                    </div>
+                    <div class="carousel-item" data-bs-interval="2000">
+                        <img src="../../media/hero/hero02.jpg" class="d-block w-100 rounded" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../../media/hero/hero03.jpg" class="d-block w-100 rounded" alt="...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-text">
+            <h1>Welcome to the Home Page</h1>
+            <p>This is the home page of our website.</p>
+        </div>
+    </section>
+
+
+    <!-- INFO: speech -->
+
+    <section class="leaders-section py-5">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+                <h2 class="section-subtitle">Leadership Messages</h2>
+            </div>
+
+            <!-- PRESIDENT -->
+            {% with leaders.president as president %}
+            <div class="leader-card row align-items-center g-5 mb-5 reveal-left">
+                <div class="col-lg-5 text-center">
+                    <div class="leader-image-wrapper">
+                        {% if president.image %}
+                            <img src="{{ president.image.url }}" class="leader-image">
+                        {% else %}
+                            <img src="{% static 'image/munir_sir.jpeg' %}" class="leader-image">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="leader-content">
+                        <span class="leader-badge">{{ president.designation }}  </span>
+                        {% if request.user.is_staff %}
+                            <button class="pill btn btn-sm btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#editPresident">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        {% endif %}
+                        <h2 class="leader-name">{{ president.name }}</h2>
+                        <h5 class="leader-organization">{{ president.organization }}</h5>
+                        <p class="leader-description">{{ president.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+
+            <!-- GENERAL SECRETARY -->
+            {% with leaders.general_secretary as general_secretary %}
+            <div class="leader-card row align-items-center g-5 flex-lg-row-reverse reveal-right">
+                <div class="col-lg-5 text-center">
+                    <div class="leader-image-wrapper">
+                        {% if general_secretary.image %}
+                            <img src="{{ general_secretary.image.url }}" class="leader-image">
+                        {% else %}
+                            <img src="{% static 'image/farseem_sir.jpeg' %}" class="leader-image">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="leader-content">
+                        <span class="leader-badge gs-badge"> {{ general_secretary.designation }} </span>
+                        {% if request.user.is_staff %}
+                            <button class="btn btn-sm btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#editGS">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        {% endif %}
+                        <h2 class="leader-name">{{ general_secretary.name }}</h2>
+                        <h5 class="leader-organization">{{ general_secretary.organization }}</h5>
+                        <p class="leader-description">{{ general_secretary.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+        </div>
+    </section>
+
+    <!-- leader modals -->
+    <div class="modal fade" id="editPresident" tabindex="-1">
+        <div class="modal-dialog">
+            <form method="POST"
+                enctype="multipart/form-data"
+                action="{% url 'update_leader' leaders.president.pk %}">
+                {% csrf_token %}
+                <div class="modal-content p-3">
+                    <h5>Edit President</h5>
+                    <input placeholder="President Name" class="form-control mb-2" name="name" value="{{ leaders.president.name }}">
+                    <input placeholder="Designation" class="form-control mb-2" name="designation" value="{{ leaders.president.designation }}">
+                    <input placeholder="Organization" class="form-control mb-2" name="organization" value="{{ leaders.president.organization }}">
+                    <textarea placeholder="President Speech" class="form-control mb-2" name="description">{{ leaders.president.description }}</textarea>
+                    <input placeholder="" type="file" name="image" class="form-control mb-3">
+                    <button class="btn btn-success w-100">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="editGS" tabindex="-1">
+        <div class="modal-dialog">
+            <form method="POST"
+                enctype="multipart/form-data"
+                action="{% url 'update_leader' leaders.general_secretary.pk %}">
+                {% csrf_token %}
+                <div class="modal-content p-3">
+                    <h5>Edit General Secretary</h5>
+                    <input placeholder="Name" class="form-control mb-2" name="name" value="{{ leaders.general_secretary.name }}">
+                    <input placeholder="Designation" class="form-control mb-2" name="designation" value="{{ leaders.general_secretary.designation }}">
+                    <input placeholder="Organization" class="form-control mb-2" name="organization" value="{{ leaders.general_secretary.organization }}">
+                    <textarea placeholder="General Secretary Speech" class="form-control mb-2" name="description">{{ leaders.general_secretary.description }}</textarea>
+                    <input placeholder="" type="file" name="image" class="form-control mb-3">
+                    <button class="btn btn-success w-100">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- project counter section -->
+
+    <section class="stats-section py-5">
+        <div class="container">
+            <h3 class="achievements mb-4 mt-3">Our Achievements</h3>
+            <div class="row text-center g-4">
+
+                <!-- Events -->
+                <div class="col-6 col-lg-3">
+                    <div class="stat-box">
+                        <h2 class="counter" data-target="120">0</h2>
+                        <p>Events Completed</p>
+                    </div>
+                </div>
+
+                <!-- Volunteers -->
+                <div class="col-6 col-lg-3">
+                    <div class="stat-box">
+                        <h2 class="counter" data-target="3500">0</h2>
+                        <p>Volunteers Joined</p>
+                    </div>
+                </div>
+
+                <!-- Schools -->
+                <div class="col-6 col-lg-3">
+                    <div class="stat-box">
+                        <h2 class="counter" data-target="250">0</h2>
+                        <p>Schools Approached</p>
+                    </div>
+                </div>
+
+                <!-- Olympiad -->
+                <div class="col-6 col-lg-3">
+                    <div class="stat-box">
+                        <h2 class="counter" data-target="45">0</h2>
+                        <p>Olympiad Reach</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- news card section -->
+
+    <section class="home-news py-5">
+        <div class="container">
+
+            <!-- SECTION TITLE -->
+            <div class="text-center mb-5 mt-3">
+                <h2 class="section-title">Recent News</h2>
+            </div>
+
+            <div class="row g-4">
+                {% for post in latest_news %}
+                <div class="col-md-6 col-lg-4 col-12">
+                    <div class="news-card shadow-sm h-100 d-flex flex-column">
+
+                        <!-- IMAGE -->
+                        <div class="news-image-wrapper">
+                            {% with post.post_media.all|first as pm %}
+                                {% if pm and pm.media and pm.media.file %}
+                                    <img src="{{ pm.media.file.url }}" class="news-image">
+                                {% else %}
+                                    <img src="{% static 'default.jpg' %}" class="news-image">
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+
+                        <!-- BODY -->
+                        <div class="news-body p-3 flex-grow-1">
+                            <h5 class="news-title">{{ post.title }}</h5>
+                            <small class="text-muted">
+                                {{ post.created_at|date:"d M Y" }}
+                            </small>
+                            {% if post.category %}
+                                <div class="mt-2">
+                                    <span class="badge bg-primary">
+                                        {{ post.category.name|title }}
+                                    </span>
+                                </div>
+                            {% endif %}
+                            <p class="news-text mt-2">
+                                {{ post.content }}
+                            </p>
+                        </div>
+                        <!-- FOOTER -->
+                        <div class="news-footer mt-auto">
+                            <a href="{% url 'article' post.id %}" class="btn btn-info w-100">
+                                Read More <i class="fas fa-arrow-right-long"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    
+    
+    
+    
+    
+    <script src="{% static "js/home.js" %}"></script>
+
+
+{% endblock %}

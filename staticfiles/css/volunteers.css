@@ -1,0 +1,84 @@
+/* LAYOUT */
+.left_panel {
+    border-radius: 12px;
+}
+.filter-panel {
+    position: sticky;
+    top: 100px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+/* VOLUNTEER CARD */
+.volunteer-card {
+    background: #fff;
+    border: none !important;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.volunteer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+/* IMAGE */
+.volunteer-img img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+/* BODY */
+.volunteer-body {
+    padding: 15px;
+}
+
+.volunteer-body h5 {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.degree {
+    font-size: 14px;
+    color: #777;
+}
+
+/* ADMIN INFO */
+.admin-info {
+    margin-top: 8px;
+}
+
+/* SOCIAL ICONS */
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icons a {
+    background-color: transparent;
+    display: inline-block;
+    font-size: 22px;
+    transition: 0.3s;
+}
+
+
+
+.social-icons .disabled {
+    color: #ccc;
+    pointer-events: none;
+}
+
+/* FILTER */
+.year-filter .btn {
+    margin: 3px;
+    border-radius: 20px;
+}
+
+.year-filter .active {
+    background: #0d6efd !important;
+    color: #fff;
+}

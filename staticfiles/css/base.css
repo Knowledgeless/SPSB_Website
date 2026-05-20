@@ -1,0 +1,82 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Base Toast */
+.custom-toast {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px !important;
+    color: #fff;
+    min-width: 280px;
+    /* Smooth entry animation */
+    transform: translateX(120%);
+    opacity: 0;
+    animation: slideIn 0.5s ease forwards;
+}
+
+/* Slide in from right */
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Progress bar */
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    animation: progressBar linear forwards;
+}
+
+/* Animation duration (match JS delay) */
+@keyframes progressBar {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* Color Variants */
+.toast-success {
+    background: #198754;
+}
+.toast-success .toast-progress {
+    background: rgba(255,255,255,0.6);
+}
+
+.toast-error {
+    background: #dc3545;
+}
+.toast-error .toast-progress {
+    background: rgba(255,255,255,0.6);
+}
+
+.toast-warning {
+    background: #ffc107;
+    color: #000;
+}
+.toast-warning .toast-progress {
+    background: rgba(0,0,0,0.3);
+}
+
+.toast-info {
+    background: #0d6efd;
+}
+.toast-info .toast-progress {
+    background: rgba(255,255,255,0.6);
+}
+
+.toast-body .btn-close {
+    color: white !important;
+}
+
+
+
+
+

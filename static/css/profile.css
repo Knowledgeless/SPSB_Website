@@ -19,3 +19,20 @@
 .admin-box {
     border-left: 4px solid #dc3545;
 }
+
+
+/* responsive */
+.profile-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #eee;
+}
+
+@media (max-width: 767.98px) {
+    .profile-img {
+        width: 120px;
+        height: 120px;
+    }
+}

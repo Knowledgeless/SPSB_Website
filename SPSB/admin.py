@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Media, NewsPost, NewsPostMedia, Volunteer, CommitteeMember
+from .models import Category, Media, NewsPost, NewsPostMedia, Volunteer, CommitteeMember, LeadershipMessage
 
 
 # ✅ Category Admin
@@ -165,3 +165,9 @@ class CommitteeMemberAdmin(admin.ModelAdmin):
 class NewsPostMediaAdmin(admin.ModelAdmin):
     list_display = ['post', 'media', 'order']
     list_filter = ['post']
+
+
+@admin.register(LeadershipMessage)
+class LeadershipMessageAdmin(admin.ModelAdmin):
+    list_display = ['position','name','designation','organization','description','image','updated_at']
+    list_filter = ['name']
