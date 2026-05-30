@@ -43,6 +43,8 @@ urlpatterns = [
     path('error/<int:code>/', views.error, name='error'),
     path('about/', views.about, name='about'),
     path('leader/update/<int:pk>/', views.update_leader, name='update_leader'),
+    path('hero/add/', views.add_hero_image, name='add_hero_image'),
+    path('hero/delete/<int:pk>/', views.delete_hero_image, name='delete_hero_image'),
 ]
 
 

@@ -4,12 +4,12 @@ import pandas as pd
 from django.db.models import Q
 from django.db.models import Case, When, IntegerField
 
-import os 
+import os
 from django.conf import settings
 from django.core.files import File
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember, LeadershipMessage
+from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember, LeadershipMessage, HeroSection
 from .forms import NewsPostForm
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
@@ -44,9 +44,12 @@ def home(request):
         "general_secretary": get_leader("general_secretary"),
     }
 
+    hero_images = HeroSection.objects.filter(is_active=True)
+
     return render(request, "home.html", {
         "latest_news": NewsPost.objects.filter(status="published")[:6],
-        "leaders": leaders
+        "leaders": leaders,
+        "hero_images": hero_images
     })
 
 def update_leader(request, pk):
@@ -64,6 +67,38 @@ def update_leader(request, pk):
         if image_files:
             leader.image = image_files[0]
         leader.save()
+    return redirect("home")
+
+
+@login_required
+def add_hero_image(request):
+    if not request.user.is_staff:
+        messages.error(request, "Permission denied")
+        return redirect("home")
+
+    if request.method == "POST" and request.FILES.get("image"):
+        image = request.FILES.get("image")
+        order = int(request.POST.get("order", HeroSection.objects.count()))
+
+        HeroSection.objects.create(
+            image=image,
+            order=order,
+            updated_by=request.user
+        )
+        messages.success(request, "Hero image added successfully!")
+
+    return redirect("home")
+
+
+@login_required
+def delete_hero_image(request, pk):
+    if not request.user.is_staff:
+        messages.error(request, "Permission denied")
+        return redirect("home")
+
+    hero = get_object_or_404(HeroSection, pk=pk)
+    hero.delete()
+    messages.success(request, "Hero image deleted successfully!")
     return redirect("home")
 
 def about(request):

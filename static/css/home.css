@@ -43,6 +43,13 @@
     visibility: visible;
 }
 
+.hero-admin-controls {
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    border-radius: 8px;
+}
+
 .hero .carousel-indicators {
     justify-content: flex-start; 
     left: 0;

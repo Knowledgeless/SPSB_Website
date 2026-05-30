@@ -422,3 +422,22 @@ class LeadershipMessage(models.Model):
 
     def __str__(self):
         return self.get_position_display()
+
+
+class HeroSection(models.Model):
+    image = models.ImageField(upload_to='hero/')
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Hero {self.order}"
