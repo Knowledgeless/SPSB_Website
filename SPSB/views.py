@@ -22,6 +22,9 @@ from django.core.paginator import Paginator
 from django.utils import timezone
 from .forms import NewsPostForm, NewsPostMediaFormSet
 
+from django.db.models import Count
+from django.db.models.functions import ExtractYear
+import json
 # Create your views here.
 
 def home(request):
@@ -591,25 +594,35 @@ def profile(request, type, id):
 
 @login_required
 def dashboard(request):
+
     stats = {
         'volunteers_active': Volunteer.objects.filter(status='active').count(),
         'volunteers_past': Volunteer.objects.filter(status='past').count(),
         'volunteers_inactive': Volunteer.objects.filter(status='inactive').count(),
         'volunteers_total': Volunteer.objects.count(),
+
         'committee_members': CommitteeMember.objects.count(),
+
         'news_published': NewsPost.objects.filter(status='published').count(),
         'news_archived': NewsPost.objects.filter(status='archived').count(),
         'news_draft': NewsPost.objects.filter(status='draft').count(),
-        'news_total': NewsPost.objects.count(),
     }
-    if not request.user.is_authenticated:
-        return redirect('login')
 
-    user_posts = NewsPost.objects.filter(created_by=request.user)
+    yearly_volunteers = (
+        Volunteer.objects
+        .annotate(year=ExtractYear('joining_date'))
+        .values('year')
+        .annotate(total=Count('id'))
+        .order_by('year')
+    )
+
+    chart_labels = [str(item['year']) for item in yearly_volunteers]
+    chart_values = [item['total'] for item in yearly_volunteers]
 
     return render(request, 'dashboard.html', {
-        'user_posts': user_posts,
-        'stats': stats
+        'stats': stats,
+        'chart_labels': json.dumps(chart_labels),
+        'chart_values': json.dumps(chart_values),
     })
 
 

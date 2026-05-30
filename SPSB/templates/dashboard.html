@@ -1,90 +1,112 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block page_title %}Dashboard{% endblock page_title %}
+{% block page_title %}Dashboard{% endblock %}
 
 {% block css_links %}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-{% endblock css_links %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
-    <div class="container mt-4">
-        <div class="dashboard-card mb-4">
-            <div class="dashboard-title">Welcome, {{ request.user.username }}!</div>
-            <div class="dashboard-stats">
-                <div class="dashboard-stat">
-                    <span class="stat-value">{{ stats.volunteers_active }}</span>
-                    <div class="stat-label">Active Volunteers</div>
-                </div>
-                <div class="dashboard-stat">
-                    <span class="stat-value">{{ stats.volunteers_past }}</span>
-                    <div class="stat-label">Past Volunteers</div>
-                </div>
-                <div class="dashboard-stat">
-                    <span class="stat-value">{{ stats.committee_members }}</span>
-                    <div class="stat-label">Committee Members</div>
-                </div>
-                <div class="dashboard-stat">
-                    <span class="stat-value">{{ stats.news_published }}</span>
-                    <div class="stat-label">Published News</div>
-                </div>
-                <div class="dashboard-stat">
-                    <span class="stat-value">{{ stats.news_archived }}</span>
-                    <div class="stat-label">Archived News</div>
-                </div>
-                <div class="dashboard-stat">
-                    <span class="stat-value">{{ stats.news_draft }}</span>
-                    <div class="stat-label">Draft News</div>
-                </div>
+
+<div class="container py-4">
+
+    <div class="welcome-box mb-4">
+        <h2>Welcome Back, {{ request.user.username }}</h2>
+        <p>Volunteer & News Management Dashboard</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-lg-4 col-md-6">
+            <div class="stat-card blue">
+                <h2>{{ stats.volunteers_active }}</h2>
+                <span>Active Volunteers</span>
             </div>
         </div>
 
-        <div class="dashboard-pie mb-4">
-            <h5 class="text-center mb-3" style="font-weight:600; color:#2e0083;">Volunteer Status Distribution</h5>
-            <canvas id="volunteerPie" width="320" height="320"></canvas>
+        <div class="col-lg-4 col-md-6">
+            <div class="stat-card purple">
+                <h2>{{ stats.volunteers_total }}</h2>
+                <span>Total Volunteers</span>
+            </div>
         </div>
 
-        <div class="dashboard-card">
-            <h5 class="mb-3" style="color:#2e0083;">Quick Stats</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Total Volunteers: <b>{{ stats.volunteers_total }}</b></li>
-                <li class="list-group-item">Total Committee Members: <b>{{ stats.committee_members }}</b></li>
-                <li class="list-group-item">Total News Posts: <b>{{ stats.news_total }}</b></li>
-            </ul>
+        <div class="col-lg-4 col-md-6">
+            <div class="stat-card orange">
+                <h2>{{ stats.committee_members }}</h2>
+                <span>Committee Members</span>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="stat-card green">
+                <h2>{{ stats.news_published }}</h2>
+                <span>Published News</span>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="stat-card red">
+                <h2>{{ stats.news_archived }}</h2>
+                <span>Archived News</span>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="stat-card dark">
+                <h2>{{ stats.news_draft }}</h2>
+                <span>Draft News</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-5 g-4">
+
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <h4>News Status Distribution</h4>
+                <canvas id="newsChart"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="chart-card">
+                <h4>Volunteer Status Distribution</h4>
+                <canvas id="volunteerChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="chart-card">
+                <h4>Volunteer Growth By Year</h4>
+                <canvas id="yearChart"></canvas>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ctx = document.getElementById('volunteerPie').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Active', 'Past', 'Inactive'],
-                    datasets: [{
-                        data: [{{ stats.volunteers_active }}, {{ stats.volunteers_past }}, {{ stats.volunteers_inactive }}],
-                        backgroundColor: [
-                            'rgba(46,0,131,0.7)',
-                            'rgba(13,110,253,0.6)',
-                            'rgba(108,117,125,0.5)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
-                                color: '#333',
-                                font: { size: 14 }
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
-{% endblock content %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+<script>
+
+const newsPublished={{ stats.news_published }};
+const newsArchived={{ stats.news_archived }};
+const newsDraft={{ stats.news_draft }};
+
+const volunteerActive={{ stats.volunteers_active }};
+const volunteerPast={{ stats.volunteers_past }};
+const volunteerInactive={{ stats.volunteers_inactive }};
+
+const yearLabels = {{ chart_labels|safe }};
+const yearValues = {{ chart_values|safe }};
+
+</script>
+
+{% endblock %}

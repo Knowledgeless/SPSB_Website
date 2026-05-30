@@ -1,57 +1,88 @@
-/* Dashboard Styles */
-.dashboard-card {
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-    background: #fff;
-    padding: 24px;
-    margin-bottom: 24px;
-    transition: box-shadow 0.2s;
+body{
+    background:#f4f7fc;
 }
-.dashboard-card:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+
+.welcome-box{
+    background:#ffffff;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
 }
-.dashboard-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2e0083;
-    margin-bottom: 12px;
+
+.welcome-box h2{
+    font-weight:700;
+    margin:0;
 }
-.dashboard-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    margin-bottom: 32px;
+
+.welcome-box p{
+    margin:0;
+    color:#6c757d;
 }
-.dashboard-stat {
-    flex: 1 1 180px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    padding: 18px 12px;
-    text-align: center;
-    font-size: 1.2rem;
-    color: #333;
-    box-shadow: 0 2px 8px rgba(46,0,131,0.04);
+
+.stat-card{
+    border-radius:20px;
+    padding:30px;
+    height:180px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    transition:.3s;
 }
-.dashboard-stat .stat-label {
-    font-size: 1rem;
-    color: #888;
-    margin-top: 6px;
+
+.stat-card:hover{
+    transform:translateY(-5px);
 }
-.dashboard-pie {
-    max-width: 340px;
-    margin: 0 auto 32px auto;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    padding: 24px 12px 12px 12px;
+
+.stat-card h2{
+    color:white;
+    font-size:52px;
+    font-weight:800;
+    margin:0;
 }
-@media (max-width: 768px) {
-    .dashboard-stats {
-        flex-direction: column;
-        gap: 12px;
-    }
-    .dashboard-pie {
-        max-width: 100%;
-        padding: 12px 4px 4px 4px;
-    }
+
+.stat-card span{
+    color:white;
+    font-size:18px;
+    font-weight:600;
+}
+
+.blue{
+    background:#2563eb;
+}
+
+.purple{
+    background:#7c3aed;
+}
+
+.orange{
+    background:#ea580c;
+}
+
+.green{
+    background:#16a34a;
+}
+
+.red{
+    background:#dc2626;
+}
+
+.dark{
+    background:#1e293b;
+}
+
+.chart-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.chart-card h4{
+    margin-bottom:20px;
+    font-weight:700;
+}
+
+canvas{
+    max-height:400px;
 }
