@@ -591,13 +591,25 @@ def profile(request, type, id):
 
 @login_required
 def dashboard(request):
+    stats = {
+        'volunteers_active': Volunteer.objects.filter(status='active').count(),
+        'volunteers_past': Volunteer.objects.filter(status='past').count(),
+        'volunteers_inactive': Volunteer.objects.filter(status='inactive').count(),
+        'volunteers_total': Volunteer.objects.count(),
+        'committee_members': CommitteeMember.objects.count(),
+        'news_published': NewsPost.objects.filter(status='published').count(),
+        'news_archived': NewsPost.objects.filter(status='archived').count(),
+        'news_draft': NewsPost.objects.filter(status='draft').count(),
+        'news_total': NewsPost.objects.count(),
+    }
     if not request.user.is_authenticated:
         return redirect('login')
 
     user_posts = NewsPost.objects.filter(created_by=request.user)
 
     return render(request, 'dashboard.html', {
-        'user_posts': user_posts
+        'user_posts': user_posts,
+        'stats': stats
     })
 
 

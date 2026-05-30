@@ -13,11 +13,10 @@
     <div class="container-fluid">
         <div class="container-fluid p-0 banner-section">
             {% if banner_image %}
-                <img src="{{ banner_image.media.file.url }}" alt="{{ post.title }}" class=" banner-image" loading="lazy">
-                
+                <img src="{{ banner_image.media.file.url }}" alt="{{ post.title }}" class="banner-image img-fluid" loading="lazy" style="aspect-ratio:16/9;">
             {% else %}
-                <div class="banner-placeholder">
-                    <i class="fas fa-image"></i>
+                <div class="banner-placeholder d-flex align-items-center justify-content-center" style="aspect-ratio:16/9;">
+                    <i class="fas fa-image fa-4x text-secondary"></i>
                 </div>
             {% endif %}
         </div>
@@ -60,7 +59,11 @@
                             {% if not pm.is_banner %}
                                 <div class="media-section">
                                     {% if pm.media %}
-                                        <img src="{{ pm.media.file.url }}" alt="{{ pm.media.alt_text }}" class="media-image" loading="lazy">
+                                        <img src="{{ pm.media.file.url }}" alt="{{ pm.media.alt_text }}" class="media-image img-fluid" loading="lazy" style="aspect-ratio:16/9;">
+                                    {% else %}
+                                        <div class="media-image d-flex align-items-center justify-content-center bg-light" style="aspect-ratio:16/9; min-height:120px;">
+                                            <i class="fas fa-image fa-2x text-secondary"></i>
+                                        </div>
                                     {% endif %}
                                     <p class="media-caption">{{ caption }}</p>
                                     {% if pm.section_text %}
@@ -92,10 +95,10 @@
                                 <div class="news-card-left">
                                     {% with news.post_media.first as pm %}
                                         {% if pm and pm.is_banner %}
-                                            <img src="{{ pm.media.file.url }}" alt="{{ news.title }}" loading="lazy">
+                                            <img src="{{ pm.media.file.url }}" alt="{{ news.title }}" loading="lazy" class="img-fluid" style="aspect-ratio:16/9;">
                                         {% else %}
-                                            <div class="placeholder-image">
-                                                <i class="fas fa-image"></i>
+                                            <div class="placeholder-image d-flex align-items-center justify-content-center bg-light" style="aspect-ratio:16/9; min-height:80px;">
+                                                <i class="fas fa-image fa-2x text-secondary"></i>
                                             </div>
                                         {% endif %}
                                     {% endwith %}

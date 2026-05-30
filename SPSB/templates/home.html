@@ -22,8 +22,8 @@
                     </div>
                     <div class="carousel-inner">
                         {% for hero in hero_images %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="{% if forloop.first %}10000{% else %}2000{% endif %}">
-                                <img src="{{ hero.image.url }}" class="d-block w-100 rounded" alt="Hero Image">
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="3000">
+                                <img src="{{ hero.image.url }}" class="d-block w-100 rounded img-fluid" alt="Hero Image" style="aspect-ratio:16/9; object-fit:cover;">
                             </div>
                         {% endfor %}
                     </div>
@@ -79,7 +79,7 @@
                 <div class="modal-content p-3">
                     <h5>Add Hero Image</h5>
                     <input type="file" name="image" class="form-control mb-3" accept="image/*" required>
-                    <input type="number" name="order" class="form-control mb-3" placeholder="Order (optional)" value="{{ hero_images.count }}">
+                    <input type="number" name="order" class="form-control mb-3" placeholder="Order (e.g., 1 for first, 2 for second)" value="{{ hero_images.count }}">
                     <button class="btn btn-success w-100">Upload</button>
                 </div>
             </form>

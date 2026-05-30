@@ -71,7 +71,11 @@
                                     {{ form.section_image }}
 
                                     {% if form.instance.media %}
-                                        <img src="{{ form.instance.media.file.url }}" class="preview-img mt-2">
+                                        <img src="{{ form.instance.media.file.url }}" class="preview-img mt-2 img-fluid" style="aspect-ratio:16/9; object-fit:cover;">
+                                    {% else %}
+                                        <div class="preview-img mt-2 d-flex align-items-center justify-content-center bg-light" style="aspect-ratio:16/9; min-height:120px;">
+                                            <i class="fas fa-image fa-2x text-secondary"></i>
+                                        </div>
                                     {% endif %}
                                 </div>
 

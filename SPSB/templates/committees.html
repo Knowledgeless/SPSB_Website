@@ -41,11 +41,13 @@
 
                             <!-- IMAGE -->
                             {% if member.profile_image %}
-                                <img src="{{ member.profile_image.url }}"
-                                     class="card-img-top"
-                                     style="height:200px; object-fit:cover;">
+                                  <img src="{{ member.profile_image.url }}"
+                                      class="card-img-top img-fluid"
+                                      style="height:200px; object-fit:cover; aspect-ratio:16/9;">
                             {% else %}
-                                <img src="{% static 'default.jpg' %}" class="card-img-top">
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:200px; aspect-ratio:16/9;">
+                                    <i class="fas fa-user-tie fa-4x text-secondary"></i>
+                                </div>
                             {% endif %}
 
                             <div class="card-body">

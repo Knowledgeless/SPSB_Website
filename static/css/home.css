@@ -413,14 +413,14 @@ button[data-bs-toggle="modal"]{
 }
 
 .btn-info{
-    background-color: var(--primary-color) !important;
-    color: white !important;
+    background-color: transparent !important;
+    color: var(--primary-color) !important;
     border: 0 !important;
 }
 
 .btn-info:hover{
-    background-color: var(--secondary-color) !important;
-    color: white !important;
+    /* background-color: var(--secondary-color) !important; */
+    color: var(--primary-color) !important;
     border: 0 !important;
     opacity: 0.9;
 }

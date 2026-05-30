@@ -94,7 +94,7 @@ class NewsPostMediaForm(forms.ModelForm):
                 'rows': 3,
                 'placeholder': 'Write section text...'
             }),
-            'order': forms.HiddenInput(),
+            'order': forms.HiddenInput(attrs={'placeholder': 'Order (e.g., 1 for first, 2 for second)'}),
             'is_banner': forms.CheckboxInput(attrs={
                 'class': 'form-check-input banner-checkbox'
             }),
