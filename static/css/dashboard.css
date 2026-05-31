@@ -1,24 +1,33 @@
 body{
-    background:#f4f7fc;
+    background: #0b1220;
+    color: white;
 }
 
-.welcome-box{
-    background:#ffffff;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,.05);
+/* TOP BAR */
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#111827;
+    padding:20px;
+    border-radius:16px;
 }
 
-.welcome-box h2{
-    font-weight:700;
+.top-bar h2{
+    font-family: var(--title-font);
+    font-size: 37px;
     margin:0;
 }
 
-.welcome-box p{
-    margin:0;
-    color:#6c757d;
+.year-select{
+    padding:10px 15px;
+    border-radius:10px;
+    border:none;
+    background:#1f2937;
+    color:white;
 }
 
+/* KPI CARDS */
 .stat-card{
     border-radius:20px;
     padding:30px;
@@ -28,61 +37,50 @@ body{
     justify-content:center;
     align-items:center;
     transition:.3s;
+    color:white;
 }
 
 .stat-card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-6px);
 }
 
 .stat-card h2{
-    color:white;
-    font-size:52px;
+    font-family: var(--title-font);
+    font-size:68px;
     font-weight:800;
-    margin:0;
 }
 
 .stat-card span{
-    color:white;
-    font-size:18px;
-    font-weight:600;
+    font-family: var(--semibold-font);
+    font-size: 20px;
+    font-weight: 400;
+    
 }
 
-.blue{
-    background:#2563eb;
-}
+/* MODERN GRADIENTS */
+.blue{background:linear-gradient(135deg,#6961ff,#123e9d);}
+.purple{background:linear-gradient(135deg,#8e4cff,#510ebd);}
+.orange{background:linear-gradient(135deg,#ffa640,#e04e00);}
+.green{background:linear-gradient(135deg,#13e59f,#008259);}
+.red{background:linear-gradient(135deg,#ff4284,#c60045);}
+.dark{background:linear-gradient(135deg,#334155,#0F172A);}
 
-.purple{
-    background:#7c3aed;
-}
-
-.orange{
-    background:#ea580c;
-}
-
-.green{
-    background:#16a34a;
-}
-
-.red{
-    background:#dc2626;
-}
-
-.dark{
-    background:#1e293b;
-}
-
+/* CHARTS */
 .chart-card{
-    background:white;
-    border-radius:20px;
+    background:#111827;
     padding:25px;
-    box-shadow:0 5px 20px rgba(0,0,0,.05);
+    border-radius:20px;
 }
 
 .chart-card h4{
-    margin-bottom:20px;
-    font-weight:700;
+    font-family: var(--semibold-font);
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom:15px;
 }
 
+/* CANVAS */
 canvas{
-    max-height:400px;
+    max-height:380px;
 }
+

@@ -595,34 +595,59 @@ def profile(request, type, id):
 @login_required
 def dashboard(request):
 
-    stats = {
-        'volunteers_active': Volunteer.objects.filter(status='active').count(),
-        'volunteers_past': Volunteer.objects.filter(status='past').count(),
-        'volunteers_inactive': Volunteer.objects.filter(status='inactive').count(),
-        'volunteers_total': Volunteer.objects.count(),
-
-        'committee_members': CommitteeMember.objects.count(),
-
-        'news_published': NewsPost.objects.filter(status='published').count(),
-        'news_archived': NewsPost.objects.filter(status='archived').count(),
-        'news_draft': NewsPost.objects.filter(status='draft').count(),
-    }
-
-    yearly_volunteers = (
+    # Get all available years dynamically
+    available_years = list(
         Volunteer.objects
-        .annotate(year=ExtractYear('joining_date'))
-        .values('year')
-        .annotate(total=Count('id'))
-        .order_by('year')
+        .values_list('volunteer_year', flat=True)
+        .distinct()
+        .order_by('-volunteer_year')
     )
 
-    chart_labels = [str(item['year']) for item in yearly_volunteers]
-    chart_values = [item['total'] for item in yearly_volunteers]
+    # selected year (from dropdown)
+    selected_year = request.GET.get('year')
 
-    return render(request, 'dashboard.html', {
-        'stats': stats,
-        'chart_labels': json.dumps(chart_labels),
-        'chart_values': json.dumps(chart_values),
+    if selected_year:
+        selected_year = int(selected_year)
+    elif available_years:
+        selected_year = available_years[0]
+    else:
+        selected_year = datetime.now().year
+
+    # FILTERED DATA (core dashboard logic)
+    volunteer_qs = Volunteer.objects.filter(volunteer_year=selected_year)
+    committee_qs = CommitteeMember.objects.filter(committee_year=selected_year)
+
+    stats = {
+        "volunteers_active": volunteer_qs.filter(status='active').count(),
+        "volunteers_past": volunteer_qs.filter(status='past').count(),
+        "volunteers_inactive": volunteer_qs.filter(status='inactive').count(),
+        "volunteers_total": volunteer_qs.count(),
+
+        "committee_members": committee_qs.count(),
+
+        # news is global (no year field)
+        "news_published": NewsPost.objects.filter(status='published').count(),
+        "news_archived": NewsPost.objects.filter(status='archived').count(),
+        "news_draft": NewsPost.objects.filter(status='draft').count(),
+    }
+
+    # YEARLY GROWTH (fully dynamic)
+    yearly_volunteers = (
+        Volunteer.objects
+        .values('volunteer_year')
+        .annotate(total=Count('id'))
+        .order_by('volunteer_year')
+    )
+
+    chart_labels = [str(i['volunteer_year']) for i in yearly_volunteers]
+    chart_values = [i['total'] for i in yearly_volunteers]
+
+    return render(request, "dashboard.html", {
+        "stats": stats,
+        "available_years": available_years,
+        "selected_year": selected_year,
+        "chart_labels": json.dumps(chart_labels),
+        "chart_values": json.dumps(chart_values),
     })
 
 
