@@ -37,7 +37,7 @@
     font-weight: 700;
     font-size: 47px;
     font-weight: 800;
-    color: #1f2937;
+    color: #0d005f;
 }
 
 .login-subtitle {
@@ -52,7 +52,19 @@ input:focus{
     border: none !important;
     box-shadow: none !important;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
 
+    -webkit-text-fill-color: inherit !important;
+
+    background-color: transparent !important;
+
+    transition: background-color 9999s ease-in-out 0s;
+}
 .login-form-section input {
     font-family: var(--p-font);
     font-weight: 400;
