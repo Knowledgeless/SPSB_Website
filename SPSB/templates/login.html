@@ -1,56 +1,152 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block page_title %}Login{% endblock %}
 
+{% block css_links %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="m-2 rounded-2" style="background-color: rgb(229, 228, 228);">
-    <div class="row w-100" style="height: 95vh;">
-        <div class="col-md-6 d-flex align-items-center justify-content-center gap-4 my-auto mx-auto p-2 rounded-4 bg-white" style="width: 800px; height: 450px;">
-            <div class="w-50 h-100">
-                <div class="card-header">
-                    <h3 class="card-title">Login</h3>
-                </div>
-                <div class="card-body">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+<div class="login-wrapper">
+
+    <div class="container-fluid">
+        <div class="row min-vh-100 justify-content-center align-items-center py-4">
+
+            <div class="col-xl-8 col-lg-10">
+
+                <div class="login-card">
+
+                    <!-- Left Side -->
+                    <div class="login-form-section">
+
+                        <div class="mb-4">
+                            <h1 class="login-title">
+                                Welcome Back..!
+                            </h1>
+
+                            <p class="login-subtitle">
+                                Sign in to access your account and continue.
+                            </p>
+                        </div>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                                    {{ message }}
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert">
+                                    </button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <!-- Username -->
+                            <div class="mb-3 position-relative">
+
+                                <span class="f_icon">
+                                    <i class="fa fa-user"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="username"
+                                    id="{{ form.username.id_for_label }}"
+                                    class="form-control login-input"
+                                    placeholder="Username"
+                                    required
+                                >
+
+                                {% if form.username.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.username.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
-                        {% endfor %}
-                    {% endif %}
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
-                            {{ form.username }}
-                            {% if form.username.errors %}
-                                <div class="text-danger">
-                                    {% for error in form.username.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+
+                            <!-- Password -->
+                            <div class="mb-4 position-relative">
+
+                                <span class="f_icon">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    class="form-control login-input pe-5"
+                                    placeholder="Password"
+                                    required
+                                >
+
+                                <span class="toggle-password" onclick="togglePassword()">
+                                    <i class="fa fa-eye" id="eyeIcon"></i>
+                                </span>
+
+                                {% if form.password.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {% for error in form.password.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <button type="submit" class="btn login-btn w-100">
+                                Login
+                            </button>
+                        </form>
+
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="login-image-section">
+
+                        <img src="{% static 'image/error_page.png' %}"
+                             alt="Login Illustration">
+
+                        <div class="image-overlay">
+                            <h2>Your Secret World</h2>
+                            <p>
+                                Manage Voluntters, Committees,
+                                News from one place.
+                            </p>
                         </div>
-                        <div class="mb-3">
-                            <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
-                            {{ form.password }}
-                            {% if form.password.errors %}
-                                <div class="text-danger">
-                                    {% for error in form.password.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </form>
+
+                    </div>
+
                 </div>
+
             </div>
-            <div class="rounded-4 w-50 h-100">
-                <img src="/media/login.webp" alt="" class="w-100 h-100 rounded-4">
-            </div>
+
         </div>
     </div>
+
 </div>
+
+
+<script>
+function togglePassword() {
+    const password = document.getElementById("password");
+    const eyeIcon = document.getElementById("eyeIcon");
+
+    if (password.type === "password") {
+        password.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+    } else {
+        password.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+    }
+}
+</script>
+
 {% endblock %}

@@ -203,14 +203,15 @@
 
 
 #links a{
-    background-color: #333;
-    padding: 7px 10px;
+    /* background-color: #333; */
+    /* padding: 7px 10px; */
+    font-size: 26px;
     border-radius: 50%;
 }
 
 a#fb:hover { color: #1877f2; }
 a#ig:hover { color: #e4405f; }
-a#x:hover { color: #000; }
+a#x:hover { color: #9081ff; }
 a#yt:hover { color: #ff0000; }
 a#ln:hover { color: #0a66c2; }
 
