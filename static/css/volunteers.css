@@ -2,6 +2,7 @@
 .left_panel {
     border-radius: 12px;
 }
+
 .filter-panel {
     position: sticky;
     top: 100px;
@@ -65,8 +66,6 @@
     transition: 0.3s;
 }
 
-
-
 .social-icons .disabled {
     color: #ccc;
     pointer-events: none;
@@ -81,4 +80,86 @@
 .year-filter .active {
     background: #0d6efd !important;
     color: #ffffff !important;
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 992px) {
+    .filter-panel {
+        position: relative;
+        top: 0;
+        margin-bottom: 20px;
+    }
+
+    .card-container {
+        padding: 0 2px;
+    }
+}
+
+@media (max-width: 768px) {
+    .left_panel {
+        padding: 15px !important;
+        background: transparent !important;
+    }
+
+    .filter-panel {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .year-filter .btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .card-container {
+        padding: 0;
+    }
+
+    .volunteer-card {
+        border-radius: 6px;
+    }
+}
+
+@media (max-width: 576px) {
+    .filter-panel {
+        padding: 12px;
+    }
+
+    .filter-panel h6 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .year-filter {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .year-filter .btn {
+        padding: 5px 10px;
+        font-size: 12px;
+        flex: 0 1 auto;
+    }
+
+    .volunteer-card {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .volunteer-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .card-body {
+        padding: 12px;
+    }
+
+    .card-title {
+        font-size: 14px;
+    }
+
+    .card-text {
+        font-size: 12px;
+    }
 }

@@ -11,12 +11,19 @@ body{
     background:#111827;
     padding:20px;
     border-radius:16px;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .top-bar h2{
     font-family: var(--title-font);
-    font-size: 37px;
+    font-size: clamp(24px, 5vw, 37px);
     margin:0;
+    min-width: 100%;
+}
+
+.top-bar form {
+    width: auto;
 }
 
 .year-select{
@@ -25,13 +32,14 @@ body{
     border:none;
     background:#1f2937;
     color:white;
+    min-width: 120px;
 }
 
 /* KPI CARDS */
 .stat-card{
     border-radius:20px;
-    padding:30px;
-    height:180px;
+    padding:clamp(15px, 5vw, 30px);
+    min-height: 160px;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -46,15 +54,16 @@ body{
 
 .stat-card h2{
     font-family: var(--title-font);
-    font-size:68px;
+    font-size: clamp(32px, 8vw, 68px);
     font-weight:800;
+    margin: 0;
 }
 
 .stat-card span{
     font-family: var(--semibold-font);
-    font-size: 20px;
+    font-size: clamp(14px, 3vw, 20px);
     font-weight: 400;
-    
+    text-align: center;
 }
 
 /* MODERN GRADIENTS */
@@ -68,13 +77,13 @@ body{
 /* CHARTS */
 .chart-card{
     background:#111827;
-    padding:25px;
+    padding:clamp(15px, 4vw, 25px);
     border-radius:20px;
 }
 
 .chart-card h4{
     font-family: var(--semibold-font);
-    font-size: 20px;
+    font-size: clamp(16px, 4vw, 20px);
     font-weight: 400;
     margin-bottom:15px;
 }
@@ -82,5 +91,101 @@ body{
 /* CANVAS */
 canvas{
     max-height:380px;
+    width: 100% !important;
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 992px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .top-bar h2 {
+        min-width: 100%;
+    }
+
+    .year-select {
+        width: 100%;
+    }
+
+    .stat-card {
+        min-height: 140px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .top-bar {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .top-bar h2 {
+        font-size: 22px;
+    }
+
+    .stat-card {
+        min-height: 130px;
+        padding: 15px;
+    }
+
+    .stat-card h2 {
+        font-size: 28px;
+    }
+
+    .stat-card span {
+        font-size: 13px;
+    }
+
+    .chart-card {
+        padding: 12px;
+    }
+
+    .chart-card h4 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .top-bar {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .top-bar h2 {
+        font-size: 18px;
+    }
+
+    .stat-card {
+        min-height: 110px;
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .stat-card h2 {
+        font-size: 24px;
+    }
+
+    .stat-card span {
+        font-size: 12px;
+    }
+
+    .chart-card {
+        padding: 10px;
+    }
+
+    .chart-card h4 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    canvas {
+        max-height: 250px;
+    }
 }
 

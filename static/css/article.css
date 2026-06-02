@@ -428,6 +428,23 @@
     .news-list {
         gap: 12px;
     }
+
+    .article-meta {
+        gap: 8px !important;
+        font-size: 13px;
+    }
+
+    .section-text {
+        font-size: 14px;
+    }
+
+    .card-title {
+        font-size: 13px;
+    }
+
+    .card-text {
+        font-size: 12px;
+    }
 }
 
 /* ============= UTILITY ANIMATIONS ============= */

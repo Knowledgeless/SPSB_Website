@@ -1,13 +1,62 @@
-.about-title{
-    font-family: var(--title-font);
-    font-weight: var(--p-weight) !important;
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.about-content{
+.about-title{
+    font-family: var(--title-font);
+    font-weight: 800 !important;
+    font-size: clamp(24px, 6vw, 42px);
+    color: #0d6efd;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+.about-description {
     font-family: var(--p-font);
-    font-weight: var(--p-weight) !important;
-    font-size: 70px;
-    line-height: 1.6;
+    font-weight: 400 !important;
+    font-size: clamp(14px, 2.5vw, 16px);
+    line-height: 1.8;
     color: #333;
-    margin-top: 20px;
+    margin-bottom: 24px;
+    text-align: justify;
+}
+
+.about-description:last-child {
+    margin-bottom: 0;
+}
+
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 768px) {
+    .about-container {
+        padding: 15px;
+    }
+
+    .about-title {
+        font-size: 28px;
+        margin-bottom: 25px;
+    }
+
+    .about-description {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-container {
+        padding: 12px;
+    }
+
+    .about-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .about-description {
+        font-size: 14px;
+        margin-bottom: 18px;
+        text-align: left;
+    }
 }

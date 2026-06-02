@@ -2,6 +2,7 @@
 .editor-container {
     max-width: 1100px;
     margin: auto;
+    padding: 0 15px;
 }
 
 .editor-header input {
@@ -471,5 +472,160 @@
     background: rgba(255, 193, 7, 0.15);
 }
 
+/* RESPONSIVE ADJUSTMENTS */
+@media (max-width: 1024px) {
+    .editor-container {
+        padding: 0 10px;
+    }
 
+    .editor-header input {
+        font-size: 1.5rem;
+    }
 
+    .status-btn,
+    .category-pill {
+        font-size: 14px;
+        padding: 4px 8px !important;
+    }
+
+    .editor-card {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .editor-container {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .editor-header input {
+        font-size: 1.3rem;
+    }
+
+    .editor-header {
+        margin-bottom: 20px;
+    }
+
+    .editor-card {
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        margin-bottom: 15px;
+    }
+
+    .editor-card h5 {
+        font-size: 16px;
+    }
+
+    .editor-card label {
+        font-size: 14px;
+    }
+
+    .status-btn,
+    .category-pill {
+        font-size: 13px;
+        padding: 4px 8px !important;
+        min-width: 25%;
+    }
+
+    .status-buttons,
+    .category-pills {
+        gap: 8px;
+    }
+
+    .drop-zone {
+        padding: 20px;
+    }
+
+    .preview-img {
+        max-height: 150px;
+    }
+
+    .save-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .publish-bar {
+        top: 5px;
+    }
+
+    .d-flex.align-items-center.gap-2 {
+        gap: 8px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .editor-container {
+        padding: 0 8px;
+    }
+
+    .editor-header input {
+        font-size: 1.1rem;
+    }
+
+    .editor-card {
+        padding: 10px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+    }
+
+    .editor-card h5 {
+        font-size: 14px;
+    }
+
+    .section-block {
+        border-radius: 8px;
+        padding: 12px;
+    }
+
+    .status-btn,
+    .category-pill {
+        font-size: 12px;
+        padding: 3px 6px !important;
+        min-width: 30%;
+        flex: 1;
+    }
+
+    .status-buttons,
+    .category-pills {
+        gap: 5px;
+    }
+
+    .drop-zone {
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .drop-zone p {
+        font-size: 13px;
+    }
+
+    .preview-img {
+        max-height: 120px;
+        margin-top: 8px;
+    }
+
+    .save-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    input.form-control,
+    textarea.form-control,
+    select.form-control {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    input[type="file"] {
+        padding: 8px;
+    }
+
+    .alert {
+        font-size: 13px;
+        padding: 10px;
+    }
+}

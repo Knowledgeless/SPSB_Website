@@ -35,4 +35,96 @@
         width: 120px;
         height: 120px;
     }
+
+    .profile-header {
+        padding: 20px !important;
+        border-radius: 12px;
+    }
+
+    .profile-header .row {
+        text-align: center;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .card h5 {
+        font-size: 16px;
+    }
+
+    .card p {
+        font-size: 14px;
+    }
+
+    .social-links {
+        margin-top: 15px;
+    }
+
+    .social-links a {
+        display: inline-block;
+        margin: 5px 5px;
+    }
+
+    .admin-box {
+        font-size: 13px;
+    }
+
+    .admin-box p {
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .profile-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-header {
+        padding: 15px !important;
+    }
+
+    .profile-header .row {
+        gap: 15px;
+    }
+
+    .card {
+        padding: 15px !important;
+        margin-bottom: 15px;
+    }
+
+    .card h5 {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .card p {
+        font-size: 13px;
+        margin: 8px 0;
+    }
+
+    .badge {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    .social-links .btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .admin-box {
+        border-left: 3px solid #dc3545;
+        font-size: 12px;
+    }
+
+    .admin-box p {
+        margin: 8px 0;
+    }
+
+    .bi {
+        font-size: 14px;
+    }
 }

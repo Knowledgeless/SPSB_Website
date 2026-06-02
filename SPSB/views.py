@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.db.models import Case, When, IntegerField
 
 import os
+import datetime
 from django.conf import settings
 from django.core.files import File
 
@@ -219,7 +220,7 @@ def create_or_edit_post(request, pk=None):
             elif post.status == 'draft':
                 messages.warning(request, f"Post {post.status.capitalize()} Successfully!")
             else:
-                messages.info(request, f"Post {post.status.capitalize()} Successfully!")
+                messages.error(request, f"Post {post.status.capitalize()} Successfully!")
             return redirect('news')
 
         else:
@@ -675,7 +676,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Welcome back, {username}!")
-                return redirect('home')
+                return redirect('dashboard')
             else:
                 messages.error(request, "Invalid username or password.")
         else:
