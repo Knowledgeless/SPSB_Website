@@ -7,7 +7,7 @@
 
 /* Base Toast */
 .custom-toast {
-    position: relative;
+    position: relative; 
     overflow: hidden;
     border-radius: 5px !important;
     color: #fff;
