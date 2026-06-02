@@ -9,7 +9,7 @@
 
 {% block content %}
     <div class="container">
-        <h2 class="text-center my-4">Our Volunteers</h2>
+        <h2 class="text-center page_title my-4">Our Volunteers</h2>
         {% if request.user.is_staff %}
             <div class="text-center mb-4">
                 <form method="POST" action="{% url 'upload_volunteers_excel' %}" enctype="multipart/form-data">
@@ -60,14 +60,16 @@
                                     <!-- DEGREE + INSTITUTION -->
                                     <p class="card-text mb-1">
                                         <small class="text-muted">
-                                            {{ volunteer.degree }} | {{ volunteer.institution }}
+                                            {{ volunteer.degree }} <br>
+                                            {{ volunteer.institution }}
                                         </small>
                                     </p>
 
                                     <!-- ROLE -->
                                     {% if volunteer.role %}
                                         <span class="badge bg-primary mb-1">
-                                            {{ volunteer.role|title }}
+                                            {{ volunteer.role|title }} <br>
+                                            
                                         </span>
                                     {% endif %}
 
@@ -94,21 +96,31 @@
 
                                 <!-- SOCIAL -->
                                 <div class="d-flex justify-content-center flex-wrap pb-3">
-                                    <a {% if volunteer.instagram_handle %} href="https://www.{{ volunteer.instagram_handle }}" target="_blank" {% endif %} class="m-1">
+
+                                    {% if volunteer.instagram_handle %}
+                                    <a href="https://instagram.com/{{ volunteer.instagram_handle }}" target="_blank" class="social-icon">
                                         <i class="fa-brands fa-instagram text-danger"></i>
                                     </a>
+                                    {% endif %}
 
-                                    <a {% if volunteer.linkedin_url %} href="{{ volunteer.linkedin_url }}" target="_blank" {% endif %} class="m-1">
+                                    {% if volunteer.linkedin_url %}
+                                    <a href="{{ volunteer.linkedin_url }}" target="_blank" class="social-icon">
                                         <i class="fa-brands fa-linkedin-in text-primary"></i>
                                     </a>
+                                    {% endif %}
 
-                                    <a {% if volunteer.twitter_handle %} href="https://www.{{ volunteer.twitter_handle }}" target="_blank" {% endif %} class="m-1">
+                                    {% if volunteer.twitter_handle %}
+                                    <a href="https://x.com/{{ volunteer.twitter_handle }}" target="_blank" class="social-icon">
                                         <i class="fa-brands fa-x-twitter text-dark"></i>
                                     </a>
+                                    {% endif %}
 
-                                    <a {% if volunteer.facebook_url %} href="{{ volunteer.facebook_url }}" target="_blank" {% endif %} class="m-1">
+                                    {% if volunteer.facebook_url %}
+                                    <a href="{{ volunteer.facebook_url }}" target="_blank" class="social-icon">
                                         <i class="fa-brands fa-facebook text-primary"></i>
                                     </a>
+                                    {% endif %}
+
                                 </div>
 
                             </div>
@@ -119,7 +131,7 @@
             </div>
 
             <!-- RIGHT SIDE: FILTER + SEARCH -->
-            <div class="col-lg-3 col-md-4">
+            <div class="col-lg-3 col-12">
 
                 <div class="filter-panel">
 
@@ -130,7 +142,7 @@
                     </form>
 
                     <!-- YEAR FILTER -->
-                    <h6 class="mb-2">Filter by Year</h6>
+                    <h6 class="mb-2 filter_tittle">Filter by Year</h6>
 
                     <div class="year-filter">
                         <a href="{% url 'volunteers' %}"
@@ -198,53 +210,7 @@
         </nav>
     {% endif %}
 
-    {% comment %} {% if page_obj.has_other_pages %}
-        <nav class="mt-4">
-            <ul class="pagination justify-content-center">
 
-                <!-- PREVIOUS -->
-                {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link"
-                        href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
-                            &laquo;
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-                {% endif %}
-
-                <!-- PAGE NUMBERS -->
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ num }}</span>
-                        </li>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <li class="page-item">
-                            <a class="page-link"
-                            href="?page={{ num }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
-                                {{ num }}
-                            </a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-
-                <!-- NEXT -->
-                {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link"
-                        href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if selected_year %}&year={{ selected_year }}{% endif %}">
-                            &raquo;
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-                {% endif %}
-
-            </ul>
-        </nav>
-    {% endif %} {% endcomment %}
 
 
 {% endblock content %}

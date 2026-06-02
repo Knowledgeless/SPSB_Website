@@ -1,30 +1,79 @@
 {% extends "base.html" %}
 {% load static %}
-{% block page_title %}About Us{% endblock page_title %}
+
+{% block page_title %}About Us{% endblock %}
 
 {% block css_links %}
-    <link rel="stylesheet" href="{% static 'css/about.css' %}">
-{% endblock css_links %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="about-container container">
-    <h2 class="about-title py-3">Society for the Popularization of Science, Bangladesh (SPSB)</h2>
-    <p class="about-description">
-        Welcome to the official website of the Student Psychological Support Board (SPSB) at NIT Trichy. We are a dedicated team of volunteers committed to providing psychological support and resources to our fellow students. Our mission is to create a supportive and inclusive environment where students can seek help, share their experiences, and find the resources they need to maintain their mental well-being.
-    </p>
-    <p class="about-description">
-        At SPSB, we understand the challenges that students face in their academic and personal lives. We are here to offer a listening ear, guidance, and access to professional resources. Our team is trained to provide confidential support and connect students with the appropriate services on campus. We believe that mental health is just as important as physical health, and we are dedicated to promoting awareness and reducing stigma around mental health issues.
-    </p>
-    <p class="about-description">
-        Whether you're dealing with stress, anxiety, depression, or simply need someone to talk to, SPSB is here for you. We encourage all students to reach out to us and take advantage of the resources we offer. Together, we can create a stronger, healthier, and more supportive community at NIT Trichy.
-    </p>
-    <p class="about-description">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias quasi, est velit ut mollitia, placeat repudiandae accusantium ipsum qui hic sunt? Accusantium amet doloremque tempora non quidem quod beatae in.
-        Eos, dicta. Quaerat optio obcaecati beatae laudantium, assumenda exercitationem corrupti praesentium. Dolorum quis, exercitationem temporibus assumenda vitae eius accusamus voluptatum nostrum velit alias, quo, qui non nisi. Quasi, velit ea?
-        Beatae fuga ullam temporibus, et, quis atque, iure unde expedita pariatur dolore autem sunt sint velit vel consequatur nam corporis doloribus quaerat necessitatibus reiciendis. Harum accusamus beatae consequatur maxime ratione.
-    </p>
-    <p class="about-description">
-        If you have any questions or would like to learn more about our services, please don't hesitate to contact us. We're here to help! You can also follow us on our social media channels to stay updated on our events and initiatives. Thank you for visiting our website, and we look forward to supporting you on your journey to mental well-being. 
-    </p>
+
+<div class="about-wrapper container py-5">
+
+    <!-- HEADER -->
+    <div class="about-header">
+        <div>
+            <h1 class="about-title">{{ about.title }}</h1>
+        </div>
+
+        {% if request.user.is_staff %}
+        <div class="action-buttons">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+                <i class="fas fa-edit"></i>
+            </button>
+
+            <a href="{% url 'about_history' %}" class="btn btn-outline-dark">
+                History
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- CONTENT -->
+    <div class="about-content">
+        {{ about.content|safe }}
+    </div>
+
 </div>
-{% endblock content %}
+
+<!-- EDIT MODAL -->
+{% if request.user.is_staff %}
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+
+        <form method="POST" action="{% url 'update_about' %}">
+            {% csrf_token %}
+
+            <div class="modal-content p-4">
+
+                <h4 class="mb-3">Edit About Page</h4>
+
+                <input type="text"
+                       name="title"
+                       class="form-control mb-3"
+                       value="{{ about.title }}">
+
+                <!-- CKEditor -->
+                <textarea name="content" id="editor">
+                    {{ about.content|safe }}
+                </textarea>
+
+                <button class="btn btn-success mt-3 w-100">
+                    Save Changes
+                </button>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- CKEDITOR SCRIPT -->
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor');
+</script>
+{% endif %}
+
+{% endblock %}

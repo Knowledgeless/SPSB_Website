@@ -3,6 +3,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 import uuid
+from django.contrib.auth.models import User
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Category(models.Model):
@@ -441,3 +443,24 @@ class HeroSection(models.Model):
 
     def __str__(self):
         return f"Hero {self.order}"
+    
+
+class AboutPage(models.Model):
+    title = models.CharField(max_length=255)
+    # Rich HTML content (from CKEditor)
+    content = CKEditor5Field('Content', config_name='default')
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.title
+
+
+class AboutPageHistory(models.Model):
+    about = models.ForeignKey(AboutPage, on_delete=models.CASCADE, related_name="history")
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-updated_at"]

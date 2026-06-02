@@ -112,7 +112,7 @@
 /* body {
     padding-top: 70px;
 } */
- html{
+html{
     scroll-behavior: smooth;
 }
 
@@ -125,6 +125,7 @@
 
 .nav-link{
     font-family: var(--p-font);
+    font-size: 18px;
     font-weight: 400 !important;
 }
 
@@ -146,6 +147,13 @@
     .navbar-brand {
         max-width: 200px;
     }
+    .nav-link {
+        font-size: clamp(14px, 3vw, 16px);
+        padding: 0 !important;
+    }
+    .nav-link:first-child {
+        padding: 18px 0 0 0 !important;
+    }
 }
 
 @media (max-width: 576px) {
@@ -154,7 +162,8 @@
     }
 
     .nav-link {
-        font-size: 14px;
+        font-size: clamp(12px, 3vw, 14px);
+        padding: 0 !important;
     }
 }
 
@@ -530,4 +539,21 @@
     .footer-copyright {
         font-size: 11px;
     }
+}
+
+.dev_team{
+    font-family: var(--p-font);
+    font-size: 13px;
+    color: #bababa;
+    margin: 10px 0 0 0;
+}
+
+.dev_team a {
+    color: #bababa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.dev_team a:hover {
+    color: white;
 }

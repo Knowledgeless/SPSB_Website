@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.files import File
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember, LeadershipMessage, HeroSection
+from .models import NewsPost, Category, Media, NewsPostMedia, Volunteer, CommitteeMember, LeadershipMessage, HeroSection, AboutPage, AboutPageHistory 
 from .forms import NewsPostForm
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
@@ -106,7 +106,69 @@ def delete_hero_image(request, pk):
     return redirect("home")
 
 def about(request):
-    return render(request, 'about.html')
+    about_obj, _ = AboutPage.objects.get_or_create(
+        id=1,
+        defaults={
+            "title": "About SPSB",
+            "content": "<p>Write your content here...</p>"
+        }
+    )
+
+    history = about_obj.history.all()[:10]
+
+    return render(request, "about.html", {
+        "about": about_obj,
+        "history": history
+    })
+
+
+@login_required
+def update_about(request):
+    if not request.user.is_staff:
+        return redirect("about")
+
+    about_obj = get_object_or_404(AboutPage, id=1)
+
+    if request.method == "POST":
+        # Save history BEFORE update
+        AboutPageHistory.objects.create(
+            about=about_obj,
+            title=about_obj.title,
+            content=about_obj.content,
+            updated_by=request.user
+        )
+
+        about_obj.title = request.POST.get("title")
+        about_obj.content = request.POST.get("content")
+        about_obj.save()
+
+    return redirect("about")
+
+
+@login_required
+def about_history(request):
+    if not request.user.is_staff:
+        return redirect("about")
+
+    about_obj = get_object_or_404(AboutPage, id=1)
+    history = about_obj.history.all()
+
+    return render(request, "about_history.html", {"history": history})
+
+
+@login_required
+def update_about(request):
+    if not request.user.is_staff:
+        return redirect("about")
+
+    about_obj = get_object_or_404(AboutPage, id=1)
+
+    if request.method == "POST":
+        about_obj.title = request.POST.get("title")
+        about_obj.content = request.POST.get("content")
+        about_obj.save()
+
+    return redirect("about")
 
 @never_cache
 def news(request):
@@ -422,8 +484,6 @@ def upload_volunteers_excel(request):
 
 
 def committees(request):
-
-
     POSITION_ORDER = Case(
         When(position="president", then=0),
         When(position="vice_president", then=1),

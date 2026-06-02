@@ -45,6 +45,9 @@ urlpatterns = [
     path('leader/update/<int:pk>/', views.update_leader, name='update_leader'),
     path('hero/add/', views.add_hero_image, name='add_hero_image'),
     path('hero/delete/<int:pk>/', views.delete_hero_image, name='delete_hero_image'),
+    path("about/", views.about, name="about"),
+    path("about/update/", views.update_about, name="update_about"),
+    path("about/history/", views.about_history, name="about_history"),
 ]
 
 

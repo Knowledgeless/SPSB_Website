@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "SPSB",
+    "django_ckeditor_5",
 ]
 
 MIDDLEWARE = [
